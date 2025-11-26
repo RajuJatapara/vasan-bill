@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="gu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#2b3d52">
+<title>વાસણ બિલ સિસ્ટમ</title>
+<link rel="icon" href="images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16.png">
+<link rel="icon" type="image/png" sizes="192x192" href="images/favicon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="images/favicon-512.png">
+<link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+
+<!-- Prevent stale cache during development (optional) -->
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+
+
+<script>
+  if(!sessionStorage.getItem("vasanBillUnlocked")){
+    const savedPassword=localStorage.getItem("vasanBillPassword");
+    if(savedPassword){
+      window.location.href="lock.html";
+    }
+    else{
+      window.location.href="lock.html";
+    }
+  }
+  </script>
+  <script>
+    // Safe Cache Refresh - LocalStorage Safe
+    (function(){
+        const v = Date.now();
+    
+        // Update favicon only
+        document.querySelectorAll("link[rel='icon'], link[rel='apple-touch-icon']")
+            .forEach(i => i.href = i.href.split("?")[0] + "?v=" + v);
+    
+        // First-load fresh refresh (session only)
+        if(!sessionStorage.getItem("fresh-"+location.pathname)) {
+            sessionStorage.setItem("fresh-"+location.pathname,"1");
+            location.href = location.pathname + "?v=" + v;
+        }
+    })();
+    </script>
+    
+<style>
+/* Reset & base */
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  font-family:"Poppins",Arial,sans-serif;
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  background: linear-gradient(270deg, #ff6b6b, #f093fb, #667eea, #43e97b);
+  background-size: 800% 800%;
+  animation: gradientAnimation 15s ease infinite;
+  transition: background 0.5s ease;
+}
+
+/* Gradient Animation */
+@keyframes gradientAnimation {
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
+}
+
+/* Container */
+.container{
+  background:rgba(255,255,255,0.95);
+  border-radius:25px;
+  box-shadow:0 25px 50px rgba(0,0,0,0.25);
+  max-width:420px;
+  width:100%;
+  padding:40px 30px;
+  text-align:center;
+  animation: fadeIn 1s ease forwards;
+  backdrop-filter: blur(10px);
+}
+
+/* Logo */
+.logo{
+  font-size:70px;
+  margin-bottom:15px;
+  animation: bounce 2s infinite, colorPulse 4s infinite;
+}
+
+/* Logo color animation */
+@keyframes colorPulse{
+  0%{color:#ff6b6b;}
+  25%{color:#f093fb;}
+  50%{color:#667eea;}
+  75%{color:#43e97b;}
+  100%{color:#ff6b6b;}
+}
+
+/* Titles */
+h1{
+  color:#2b3d52;
+  font-size:26px;
+  margin-bottom:5px;
+  font-weight:700;
+}
+.subtitle{
+  color:#666;
+  font-size:15px;
+  margin-bottom:30px;
+  opacity:0.8;
+}
+
+/* Menu buttons */
+.menu{
+  display:flex;
+  flex-direction:column;
+  gap:15px;
+}
+.menu-btn{
+  background:linear-gradient(135deg,#667eea,#764ba2);
+  color:white;
+  border:none;
+  padding:16px 24px;
+  border-radius:14px;
+  font-size:16px;
+  font-weight:600;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  box-shadow:0 6px 20px rgba(102,126,234,0.4);
+  transition:all 0.3s ease;
+  text-decoration:none;
+  position:relative;
+  overflow:hidden;
+}
+.menu-btn::after{
+  content:"";
+  position:absolute;
+  top:0; left:0;
+  width:100%; height:100%;
+  background: rgba(255,255,255,0.2);
+  transform: translateX(-100%);
+  transition: transform 0.5s ease;
+}
+.menu-btn:hover::after{
+  transform: translateX(0);
+}
+.menu-btn:hover{
+  transform:translateY(-3px) scale(1.02);
+  box-shadow:0 10px 25px rgba(102,126,234,0.5);
+}
+.menu-btn:active{
+  transform:translateY(0) scale(0.98);
+}
+.menu-btn.secondary{
+  background:linear-gradient(135deg,#f093fb 0%,#f5576c 100%);
+  box-shadow:0 6px 20px rgba(245,87,108,0.4);
+}
+.menu-btn.secondary:hover{
+  box-shadow:0 10px 25px rgba(245,87,108,0.5);
+}
+.menu-btn.tertiary{
+  background:linear-gradient(135deg,#4facfe 0%,#00f2fe 100%);
+  box-shadow:0 6px 20px rgba(79,172,254,0.4);
+}
+.menu-btn.tertiary:hover{
+  box-shadow:0 10px 25px rgba(79,172,254,0.5);
+}
+.menu-icon{
+  font-size:20px;
+  transition: transform 0.3s ease;
+}
+.menu-btn:hover .menu-icon{
+  transform:rotate(15deg);
+}
+
+/* Quick stats */
+.quick-stats{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:15px;
+  margin-bottom:25px;
+  padding:15px;
+  background:linear-gradient(135deg,#f5f7fa 0%,#c3cfe2 100%);
+  border-radius:14px;
+  box-shadow:0 6px 20px rgba(0,0,0,0.1);
+  opacity:0;
+  animation: fadeIn 1s 0.5s forwards;
+}
+
+.stat-item{
+  text-align:center;
+  padding:12px;
+  background:white;
+  border-radius:10px;
+  box-shadow:0 3px 10px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+}
+.stat-item:hover{
+  transform: scale(1.05);
+}
+.stat-number{
+  font-size:28px;
+  font-weight:700;
+  color:#2b3d52;
+  margin-bottom:5px;
+}
+.stat-label{
+  font-size:12px;
+  color:#666;
+  font-weight:600;
+}
+
+/* Backup info */
+.backup-info{
+  background:#e3f2fd;
+  border:1px solid #2196f3;
+  border-radius:10px;
+  padding:14px;
+  margin-top:20px;
+  font-size:13px;
+  color:#1565c0;
+  text-align:left;
+  opacity:0;
+  transition: opacity 0.5s ease;
+}
+.backup-info strong{
+  display:block;
+  margin-bottom:6px;
+  font-size:14px;
+}
+
+/* Responsive */
+@media (max-width:480px){
+  .container{padding:30px 20px;}
+  h1{font-size:22px;}
+  .menu-btn{padding:14px 18px;font-size:15px;}
+  .logo{font-size:60px;}
+  .quick-stats{grid-template-columns:1fr 1fr;}
+}
+
+/* Animations */
+@keyframes bounce{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-15px);}
+}
+@keyframes fadeIn{
+  to{opacity:1;}
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="logo">🍽️</div>
+  <h1>વાસણ બિલ સિસ્ટમ</h1>
+  <div class="subtitle">ઉપલી ફળી મઢ વાસણ</div>
+
+  <div class="quick-stats" id="quickStats" style="display:none;">
+    <div class="stat-item">
+      <div class="stat-number" id="totalBillsCount">0</div>
+      <div class="stat-label">કુલ બિલ</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number" id="pendingBillsCount">0</div>
+      <div class="stat-label">બાકી</div>
+    </div>
+  </div>
+
+  <div class="menu">
+    <a href="bill_create.html" class="menu-btn">
+      <span class="menu-icon">➕</span>
+      <span>નવું બિલ બનાવો</span>
+    </a>
+    <a href="bill_history.html" class="menu-btn secondary">
+      <span class="menu-icon">📋</span>
+      <span>ઇતિહાસ જુઓ</span>
+    </a>
+
+    <div id="backupContainer"></div>
+
+    <button class="menu-btn" onclick="document.getElementById('restoreInput').click()" style="background:linear-gradient(135deg,#ff6b6b,#ee5a6f);box-shadow:0 6px 20px rgba(255,107,107,0.4);">
+      <span class="menu-icon">📥</span>
+      <span>બેકઅપ રીસ્ટોર કરો</span>
+    </button>
+    <button class="menu-btn" onclick="lockSystem()" style="background:linear-gradient(135deg,#6c757d,#5a6268);box-shadow:0 6px 20px rgba(108,117,125,0.4);">
+      <span class="menu-icon">🔒</span>
+      <span>લૉક કરો</span>
+    </button>
+    <input type="file" id="restoreInput" accept=".json" style="display:none;" onchange="importBackup(event)">
+  </div>
+
+  <div class="backup-info" id="backupInfo" style="display:none;">
+    <strong>💡 બેકઅપ માહિતી:</strong>
+    <div id="backupStatus"></div>
+  </div>
+</div>
+<script>
+
+function importBackup(event){
+  const file=event.target.files[0];
+  if(!file){
+    return;
+  }
+  
+  const reader=new FileReader();
+  reader.onload=function(e){
+    try{
+      const backupData=JSON.parse(e.target.result);
+      
+      if(!backupData.bills || !Array.isArray(backupData.bills)){
+        alert("❌ અમાન્ય બેકઅપ ફાઇલ!");
+        return;
+      }
+      
+      const currentHistory=JSON.parse(localStorage.getItem("vasanBillHistory")||"[]");
+      const currentIds=new Set(currentHistory.map(b=>b.id));
+      
+      let newBills=0;
+      let duplicateBills=0;
+      
+      backupData.bills.forEach(backupBill=>{
+        if(!currentIds.has(backupBill.id)){
+          currentHistory.push(backupBill);
+          newBills++;
+        }else{
+          duplicateBills++;
+        }
+      });
+      
+      if(newBills===0 && duplicateBills>0){
+        alert(`ℹ️ બધા બિલ પહેલેથી જ મોજૂદ છે. કોઈ નવા બિલ નથી રીસ્ટોર થયા.`);
+        return;
+      }
+      
+      if(!confirm(`${newBills} નવા બિલ રીસ્ટોર થશે.\n${duplicateBills>0?`${duplicateBills} બિલ પહેલેથી જ મોજૂદ છે (ડુપ્લિકેટ નહીં થશે).\n`:""}\nશું તમે આગળ વધવા માંગો છો?`)){
+        return;
+      }
+      
+      currentHistory.sort((a,b)=>new Date(b.timestamp)-new Date(a.timestamp));
+      if(currentHistory.length>100){
+        currentHistory=currentHistory.slice(0,100);
+      }
+      
+      localStorage.setItem("vasanBillHistory",JSON.stringify(currentHistory));
+      showBackupInfo(`✅ ${newBills} નવા બિલ રીસ્ટોર થયા! ${duplicateBills>0?`(${duplicateBills} ડુપ્લિકેટ અવગણ્યા)`:""}`,true);
+      
+      setTimeout(()=>{
+        if(confirm("શું તમે હવે ઇતિહાસ પૃષ્ઠ પર જવા માંગો છો?")){
+          window.location.href="bill_history.html";
+        }
+      },1000);
+    }catch(error){
+      alert("❌ બેકઅપ ફાઇલ read કરવામાં ભૂલ: "+error.message);
+    }
+  };
+  reader.readAsText(file);
+  event.target.value="";
+}
+
+function showBackupInfo(message,isSuccess){
+  const infoDiv=document.getElementById("backupInfo");
+  const statusDiv=document.getElementById("backupStatus");
+  statusDiv.textContent=message;
+  infoDiv.style.display="block";
+  infoDiv.style.background=isSuccess?"#e8f5e9":"#fff3cd";
+  infoDiv.style.borderColor=isSuccess?"#4caf50":"#ffc107";
+  infoDiv.style.color=isSuccess?"#2e7d32":"#856404";
+  
+  setTimeout(()=>{
+    infoDiv.style.display="none";
+  },5000);
+}
+
+function lockSystem(){
+  if(confirm("શું તમે સિસ્ટમ લૉક કરવા માંગો છો?")){
+    sessionStorage.removeItem("vasanBillUnlocked");
+    window.location.href="lock.html";
+  }
+}
+
+function autoBackup(){
+  const history = JSON.parse(localStorage.getItem("vasanBillHistory") || "[]");
+  if(history.length === 0) return;
+
+  const lastBackup = localStorage.getItem("lastAutoBackup");
+  const now = Date.now();
+  const backupInterval = 30 * 24 * 60 * 60 * 1000; // 24 hours
+
+  if(!lastBackup || (now - parseInt(lastBackup)) > backupInterval){
+    const backupData = {
+      version: "1.0",
+      exportDate: new Date().toISOString(),
+      totalBills: history.length,
+      bills: history
+    };
+
+    const dataStr = JSON.stringify(backupData, null, 2);
+    const blob = new Blob([dataStr], { type:"application/json" });
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "Vasan_Bill_Backup.json";
+    link.click();
+    URL.revokeObjectURL(url);
+
+    localStorage.setItem("lastAutoBackup", now.toString());
+    localStorage.setItem("lastBackupDate", now.toString());
+  }
+}
+
+
+function exportBackup(){
+  const history = JSON.parse(localStorage.getItem("vasanBillHistory") || "[]");
+  if(history.length === 0){
+    alert("⚠ કોઈ બિલ નથી! પહેલા બિલ બનાવો.");
+    return;
+  }
+
+  const now = Date.now();
+  const lastBackup = localStorage.getItem("lastBackupDate");
+  const backupInterval = 15 * 24 * 60 * 60 * 1000; // 15 days
+
+  // Prevent early backup
+  if(lastBackup && (now - parseInt(lastBackup)) < backupInterval){
+    alert("⚠ 15 દિવસ પહેલા બેકઅપ લીધો છે. ફરી ડાઉનલોડ કરવા રાહ જુઓ.");
+    return;
+  }
+
+  const backupData = {
+    version: "1.0",
+    exportDate: new Date().toISOString(),
+    totalBills: history.length,
+    bills: history
+  };
+
+  const dataStr = JSON.stringify(backupData, null, 2);
+  const blob = new Blob([dataStr], { type:"application/json" });
+  const url = URL.createObjectURL(blob);
+
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "Vasan_Bill_Backup.json";
+  link.click();
+  URL.revokeObjectURL(url);
+
+  localStorage.setItem("lastBackupDate", now.toString());
+  alert("✅ બેકઅપ સફળતાપૂર્વક ડાઉનલોડ થયો!");
+  showBackupInfo();
+}
+
+function showBackupInfo(){
+  const backupContainer = document.getElementById("backupContainer");
+  backupContainer.innerHTML = "";
+
+  const lastBackup = localStorage.getItem("lastBackupDate");
+  const now = Date.now();
+  const backupInterval = 15 * 24 * 60 * 60 * 1000; // 15 days
+
+  if(!lastBackup || (now - parseInt(lastBackup)) >= backupInterval){
+
+    const btn = document.createElement("a");
+    btn.href = "javascript:void(0)";
+    btn.className = "menu-btn";
+
+    btn.innerHTML = `
+      <span class="menu-icon">💾</span>
+      <span>બેકઅપ લો</span>
+    `;
+
+    // ⭐ THE FIX: force same width as others
+    btn.style.width = "100%";
+
+    btn.onclick = exportBackup;
+
+    backupContainer.appendChild(btn);
+
+    alert("⚠ તમારું બેકઅપ 15 દિવસથી વધુ જૂનું છે!");
+  }
+}
+
+
+window.addEventListener("load", () => {
+  autoBackup();
+  showBackupInfo();
+});
+
+
+</script>
+
+</body>
+</html>
+

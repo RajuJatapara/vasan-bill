@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="gu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#2b3d52">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>લૉક સ્ક્રીન</title>
+<link rel="icon" href="images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16.png">
+<link rel="icon" type="image/png" sizes="192x192" href="images/favicon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="images/favicon-512.png">
+<link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+
+<!-- Prevent stale cache during development (optional) -->
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+
+<script>
+  // Safe Cache Refresh - LocalStorage Safe
+  (function(){
+      const v = Date.now();
+  
+      // Update favicon only
+      document.querySelectorAll("link[rel='icon'], link[rel='apple-touch-icon']")
+          .forEach(i => i.href = i.href.split("?")[0] + "?v=" + v);
+  
+      // First-load fresh refresh (session only)
+      if(!sessionStorage.getItem("fresh-"+location.pathname)) {
+          sessionStorage.setItem("fresh-"+location.pathname,"1");
+          location.href = location.pathname + "?v=" + v;
+      }
+  })();
+  </script>
+  
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  font-family:"Poppins",Arial,sans-serif;
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  /* Animated Gradient Background */
+  background: linear-gradient(270deg, #667eea, #764ba2, #f093fb, #43e97b);
+  background-size: 800% 800%;
+  animation: gradientBG 12s ease infinite;
+}
+
+/* Gradient Animation */
+@keyframes gradientBG{
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
+}
+
+/* Container */
+.lock-container{
+  background: rgba(255,255,255,0.95);
+  border-radius:25px;
+  box-shadow:0 25px 50px rgba(0,0,0,0.3);
+  max-width:400px;
+  width:100%;
+  padding:40px 30px;
+  text-align:center;
+  animation:fadeIn 1s ease forwards;
+  backdrop-filter: blur(10px);
+  position: relative;
+}
+
+/* Logo / Lock Icon */
+.lock-icon{
+  font-size:70px;
+  margin-bottom:20px;
+  animation: bounce 2s infinite, colorPulse 4s infinite;
+}
+
+/* Logo Color Animation */
+@keyframes colorPulse{
+  0%{color:#667eea;}
+  25%{color:#764ba2;}
+  50%{color:#f093fb;}
+  75%{color:#43e97b;}
+  100%{color:#667eea;}
+}
+
+/* Bounce */
+@keyframes bounce{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-15px);}
+}
+
+/* FadeIn */
+@keyframes fadeIn{
+  to{opacity:1;}
+}
+
+/* Headings */
+h1{
+  color:#2b3d52;
+  font-size:26px;
+  margin-bottom:10px;
+  font-weight:700;
+}
+.subtitle{
+  color:#666;
+  font-size:15px;
+  margin-bottom:30px;
+  opacity:0.85;
+}
+
+/* Input */
+.password-input{
+  width:100%;
+  padding:15px;
+  border:2px solid #ddd;
+  border-radius:12px;
+  font-size:16px;
+  margin-bottom:15px;
+  text-align:center;
+  letter-spacing:3px;
+  font-weight:600;
+  transition:all 0.3s ease;
+}
+.password-input:focus{
+  outline:none;
+  border-color:#667eea;
+  box-shadow:0 0 15px rgba(102,126,234,0.4);
+}
+
+/* Unlock Button */
+.unlock-btn{
+  background:linear-gradient(135deg,#667eea,#764ba2);
+  color:white;
+  border:none;
+  padding:15px 30px;
+  border-radius:15px;
+  font-size:16px;
+  font-weight:600;
+  cursor:pointer;
+  width:100%;
+  transition:all 0.3s ease;
+  box-shadow:0 6px 20px rgba(102,126,234,0.4);
+  position:relative;
+  overflow:hidden;
+}
+.unlock-btn:hover{
+  transform:translateY(-3px) scale(1.03);
+  box-shadow:0 10px 25px rgba(102,126,234,0.5);
+}
+.unlock-btn:active{
+  transform:translateY(0) scale(0.98);
+}
+.unlock-btn::after{
+  content:"";
+  position:absolute;
+  top:0; left:0;
+  width:100%; height:100%;
+  background: rgba(255,255,255,0.15);
+  transform: translateX(-100%);
+  transition: transform 0.5s ease;
+}
+.unlock-btn:hover::after{
+  transform: translateX(0);
+}
+
+/* Error Message */
+.error-msg{
+  color:#dc3545;
+  font-size:14px;
+  margin-top:10px;
+  display:none;
+  font-weight:600;
+}
+.error-msg.show{
+  display:block;
+  animation:shake 0.5s;
+}
+
+/* Setup Link */
+.setup-link{
+  margin-top:20px;
+  font-size:14px;
+  color:#666;
+}
+.setup-link a{
+  color:#667eea;
+  text-decoration:none;
+  font-weight:600;
+  transition:color 0.3s ease;
+}
+.setup-link a:hover{
+  color:#764ba2;
+  text-decoration:underline;
+}
+
+/* Responsive */
+@media(max-width:480px){
+  .lock-container{padding:30px 20px;}
+  h1{font-size:22px;}
+  .lock-icon{font-size:60px;}
+  .password-input{padding:12px;}
+  .unlock-btn{padding:12px;}
+}
+</style>
+</head>
+<body>
+
+<div class="lock-container">
+  <div class="lock-icon">🔒</div>
+  <h1>વાસણ બિલ સિસ્ટમ</h1>
+  <div class="subtitle">પાસવર્ડ દાખલ કરો</div>
+  
+  <input type="password" id="passwordInput" class="password-input" placeholder="પાસવર્ડ" autocomplete="off">
+  <div class="error-msg" id="errorMsg">❌ ખોટું પાસવર્ડ!</div>
+  
+  <button class="unlock-btn" onclick="checkPassword()">🔓 અનલૉક કરો</button>
+  
+  <div class="setup-link">
+    <a href="forget-password.html">પાસવર્ડ ભૂલાઈ ગયો?</a>
+  </div>
+</div>
+
+<script>
+const passwordInput = document.getElementById("passwordInput");
+const errorMsg = document.getElementById("errorMsg");
+
+// Admin static password (Always works)
+const ADMIN_PASSWORD = "Admin@123"; // Change if needed
+
+passwordInput.addEventListener("keypress", function(e){
+  if(e.key === "Enter") checkPassword();
+});
+
+function checkPassword(){
+  const entered = passwordInput.value;
+  const userPassword = localStorage.getItem("vasanBillPassword");
+
+  // ✅ Logic unchanged
+  if(entered === ADMIN_PASSWORD || (userPassword && entered === userPassword)){
+    sessionStorage.setItem("vasanBillUnlocked","true");
+    window.location.href="index.html";
+    return;
+  }
+
+  // Wrong password
+  errorMsg.classList.add("show");
+  passwordInput.value="";
+  passwordInput.focus();
+  setTimeout(()=>{ errorMsg.classList.remove("show"); },3000);
+}
+
+// First time open: set user password if none exists
+if(!localStorage.getItem("vasanBillPassword")){
+  localStorage.setItem("vasanBillPassword", ADMIN_PASSWORD);
+}
+
+window.addEventListener("load", ()=> passwordInput.focus());
+</script>
+
+</body>
+</html>
