@@ -1,577 +1,644 @@
 <!DOCTYPE html>
 <html lang="gu">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#2b3d52">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="વાસણ બિલ">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#2b3d52">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="વાસણ બિલ">
 
-<base href="./">
-<title>બિલ ઇતિહાસ</title>
-<link rel="icon" href="images/favicon.ico">
-<link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16.png">
-<link rel="icon" type="image/png" sizes="192x192" href="images/favicon-192.png">
-<link rel="icon" type="image/png" sizes="512x512" href="images/favicon-512.png">
-<link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+  <base href="./">
+  <title>બિલ ઇતિહાસ</title>
+  <link rel="icon" href="images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="images/favicon-192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="images/favicon-512.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
 
-<!-- Prevent stale cache during development (optional) -->
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0">
+  <!-- Prevent stale cache during development (optional) -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
 
 
-<script>
-if(!sessionStorage.getItem("vasanBillUnlocked")){
-  const savedPassword=localStorage.getItem("vasanBillPassword");
-  if(savedPassword){
-    window.location.href="lock.html";
-  }else{
-    window.location.href="lock.html";
-  }
-}
-</script>
-<script>
-  // Safe Cache Refresh - LocalStorage Safe
-  (function(){
+  <script>
+    if (!sessionStorage.getItem("vasanBillUnlocked")) {
+      const savedPassword = localStorage.getItem("vasanBillPassword");
+      if (savedPassword) {
+        window.location.href = "lock.html";
+      } else {
+        window.location.href = "lock.html";
+      }
+    }
+  </script>
+  <script>
+    // Safe Cache Refresh - LocalStorage Safe
+    (function () {
       const v = Date.now();
-  
+
       // Update favicon only
       document.querySelectorAll("link[rel='icon'], link[rel='apple-touch-icon']")
-          .forEach(i => i.href = i.href.split("?")[0] + "?v=" + v);
-  
+        .forEach(i => i.href = i.href.split("?")[0] + "?v=" + v);
+
       // First-load fresh refresh (session only)
-      if(!sessionStorage.getItem("fresh-"+location.pathname)) {
-          sessionStorage.setItem("fresh-"+location.pathname,"1");
-          location.href = location.pathname + "?v=" + v;
+      if (!sessionStorage.getItem("fresh-" + location.pathname)) {
+        sessionStorage.setItem("fresh-" + location.pathname, "1");
+        location.href = location.pathname + "?v=" + v;
       }
-  })();
+    })();
   </script>
-  
-<style>
-/* RESET */
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  -webkit-tap-highlight-color:transparent;
-}
-body{
-  font-family:"Poppins",Arial,sans-serif;
-  background:#f3f6f9;
-  color:#1f2d3d;
-  padding:12px;
-}
 
-/* HEADER */
-.header{
-  background:#2b3d52;
-  color:white;
-  padding:16px;
-  border-radius:12px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  flex-wrap:wrap;
-  gap:12px;
-  box-shadow:0 4px 12px rgba(0,0,0,0.15);
-}
-.header h1{
-  font-size:20px;
-}
-.back-btn{
-  background:rgba(255,255,255,0.15);
-  padding:8px 16px;
-  border:none;
-  border-radius:8px;
-  color:white;
-  cursor:pointer;
-  font-size:14px;
-  font-weight:600;
-}
-
-/* FILTER BOX */
-.filters{
-  background:white;
-  padding:20px;
-  border-radius:12px;
-  margin-top:20px;
-  box-shadow:0 3px 12px rgba(0,0,0,0.08);
-}
-.filters-title{
-  font-size:18px;
-  font-weight:600;
-  margin-bottom:16px;
-}
-.filter-row{
-  display:grid;
-  gap:12px;
-  grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); /* responsive columns */
-}
-.filter-group label{
-  font-size:13px;
-  margin-bottom:6px;
-  color:#485460;
-}
-.filter-group input,
-.filter-group select{
-  width:100%;
-  padding:12px;
-  border:1px solid #dfe4ea;
-  border-radius:8px;
-  font-size:15px;
-  background:#fafafa;
-}
-.filter-actions{
-  margin-top:15px;
-  display:flex;
-  gap:12px;
-  flex-wrap:wrap;
-}
-.btn-filter{
-  flex:1;
-  background:#2b3d52;
-  color:white;
-  padding:12px;
-  border:none;
-  border-radius:8px;
-  font-weight:600;
-}
-.btn-clear{
-  background:#ced6e0;
-  color:#2f3542;
-}
-
-/* STATS (MOBILE 2 per row, LARGE 4 per row) */
-.stats{
-  margin-top:20px;
-  display:grid;
-  gap:14px;
-  grid-template-columns:repeat(2,1fr);
-}
-@media(min-width:600px){
-  .stats{
-    grid-template-columns:repeat(4,1fr);
-  }
-}
-.stat-card{
-  background:white;
-  border-radius:12px;
-  padding:16px;
-  text-align:center;
-  box-shadow:0 3px 10px rgba(0,0,0,0.08);
-}
-.stat-value{
-  font-size:22px;
-  font-weight:700;
-}
-.stat-label{
-  font-size:12px;
-  color:#555;
-}
-
-/* HISTORY LIST */
-.history-list{
-  margin-top:20px;
-  display:flex;
-  flex-direction:column;
-  gap:16px;
-}
-.history-item{
-  background:white;
-  border-radius:14px;
-  padding:18px;
-  box-shadow:0 3px 12px rgba(0,0,0,0.1);
-  transition:0.25s;
-}
-.history-item:hover{
-  transform:translateY(-3px);
-  box-shadow:0 6px 16px rgba(0,0,0,0.15);
-}
-.history-header{
-  display:flex;
-  justify-content:space-between;
-  flex-wrap:wrap;
-  margin-bottom:14px;
-}
-.history-title{
-  font-size:17px;
-  font-weight:600;
-}
-.status-badge{
-  padding:6px 14px;
-  border-radius:20px;
-  font-size:12px;
-  font-weight:600;
-}
-.status-pending{
-  background:#ffeeba;
-  color:#856404;
-}
-.status-completed{
-  background:#d4edda;
-  color:#155724;
-}
-.history-date{
-  font-size:13px;
-  background:#e9eef3;
-  padding:6px 12px;
-  border-radius:8px;
-  color:#333;
-}
-
-/* INFO GRID */
-.history-info{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-  margin-bottom:14px;
-}
-.history-info strong{
-  font-size:12px;
-  color:#666;
-}
-.history-info span{
-  font-size:14px;
-  font-weight:600;
-}
-
-/* ITEMS TABLE */
-.history-items{
-  background:#f7f9fc;
-  padding:12px;
-  border-radius:10px;
-  overflow-x:auto;
-}
-.history-items table{
-  width:100%;
-  border-collapse:collapse;
-}
-.history-items th{
-  background:#2b3d52;
-  color:white;
-  padding:8px;
-  font-size:12px;
-}
-.history-items td{
-  padding:8px;
-  border-bottom:1px solid #ddd;
-  font-size:13px;
-}
-
-/* PAYMENT INFO */
-.payment-info{
-  background:#f7f9fc;
-  padding:12px;
-  border-radius:10px;
-  margin-top:10px;
-  display:flex;
-  flex-wrap:wrap;
-  gap:10px;
-  justify-content:space-between;
-}
-
-/* PAYMENT INPUT - PERFECT ALIGNMENT */
-.payment-input {
-  display: flex;
-  gap: 10px;
-  margin-top: 10px;
-  width: 100%;
-  align-items: stretch;  /* input & button same height */
-  flex-wrap: nowrap;     /* hamesha ek line me */
-}
-
-.payment-input input {
-  flex: 1;               /* input fills available space */
-  min-width: 0;          /* prevent overflow */
-  padding: 14px;
-  border-radius: 10px;
-  border: 1px solid #ccc;
-  font-size: 15px;
-  box-sizing: border-box;
-  height: 48px;          /* fixed height to match button */
-}
-
-.payment-input button {
-  flex: 0 0 120px;       /* fixed width button */
-  padding: 14px;
-  border-radius: 10px;
-  border: none;
-  background: #28a745;
-  color: white;
-  font-weight: 600;
-  font-size: 15px;
-  cursor: pointer;
-  height: 48px;          /* same height as input */
-  white-space: nowrap;
-}
-
-/* MOBILE FIX - very small screens */
-@media (max-width: 480px) {
-  .payment-input {
-    flex-wrap: nowrap;    /* still one line */
-    gap: 8px;
-  }
-  .payment-input input {
-    min-width: 0;         /* allow shrink */
-  }
-  .payment-input button {
-    flex: 0 0 100px;      /* slightly smaller button on mobile */
-  }
-}
-
-
-/* MOBILE FIX */
-@media(max-width:480px){
-  .payment-input input{
-    flex:1 1 100%; /* full width on small screens */
-    min-width:0;
-  }
-}
-
-/* ACTION BUTTONS */
-.history-actions{
-  margin-top:14px;
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-}
-.btn{
-  flex:1;
-  padding:10px;
-  border-radius:8px;
-  border:none;
-  font-weight:600;
-  color:white;
-  position:relative;
-  overflow:hidden;
-}
-.btn-view{background:#007bff;}
-.btn-update{background:#28a745;}
-.btn-delete{background:#dc3545;}
-
-/* RIPPLE EFFECT */
-.btn::after{
-  content:"";
-  position:absolute;
-  width:5px;
-  height:5px;
-  background:rgba(255,255,255,0.5);
-  border-radius:50%;
-  transform:scale(1);
-  opacity:0;
-  pointer-events:none;
-  transition:0.4s;
-}
-.btn:active::after{
-  transform:scale(18);
-  opacity:1;
-}
-
-/* INPUT FOCUS EFFECT */
-input:focus, select:focus{
-  border-color:#2b3d52;
-  box-shadow:0 0 0 3px rgba(43,61,82,0.2);
-  outline:none;
-}
-
-/* EMPTY STATE */
-.empty-state{
-  background:white;
-  padding:30px;
-  border-radius:14px;
-  text-align:center;
-  box-shadow:0 3px 12px rgba(0,0,0,0.08);
-}
-.empty-state-icon{
-  font-size:60px;
-  opacity:0.4;
-}
-
-/* MOBILE FIXES */
-@media(max-width:768px){
-  .history-info{grid-template-columns:1fr;}
-  .btn{width:100%;}
-  .filter-actions button{flex:1;}
-}
-
-/* PRINT FIX – COLOR EXACT */
-* {
-  -webkit-print-color-adjust: exact !important;
-  print-color-adjust: exact !important;
-}
-
-@media print {
-
-  /* सब hide */
-  body * {
-    visibility: hidden !important;
-  }
-
-  /* सिर्फ बिल दिखे */
-  #finalBillView, #finalBillView * {
-    visibility: visible !important;
-  }
-
-  /* BILL को PDF में PERFECT CENTER + ORIGINAL SIZE में लाओ */
-  #finalBillView {
-    position: fixed !important;
-    top: 20px !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-
-    width: 520px !important;       /* 🔥 Real Width — Shrink नहीं होगा */
-    max-width: 520px !important;   /* Same fixed width */
-    margin: 0 auto !important;
-
-    background: white !important;
-    padding: 0 !important;
-    zoom: 1 !important;            /* ✔ Shrink रोकने के लिए */
-    scale: 1 !important;           /* ✔ Size पूरी रखने के लिए */
-  }
-
-  /* Page scaling हटाएँ */
-  @page {
-    size: auto;
-    margin: 0;
-  }
-
-  
-}
-
-
-</style>
-</head>
-<body>
-<div class="container">
-  <div class="header">
-    <h1>📋 બિલ ઇતિહાસ</h1>
-    <div style="display:flex;gap:10px;flex-wrap:wrap;">
-      <button id="backupBtn" class="back-btn" style="background:rgba(76,175,80,0.8);">💾 બેકઅપ</button>
-      <button class="back-btn" onclick="exportReport()" style="background:rgba(255,255,255,0.2);">📊 રિપોર્ટ</button>
-      <a href="index.html" class="back-btn">← પાછળ</a>
-    </div>
-  </div>
-  
-  <div class="filters">
-    <div class="filters-title">🔍 ફિલ્ટર</div>
-    <div class="filter-row">
-      <div class="filter-group">
-        <label>લેનારનું નામ</label>
-        <input type="text" id="filterName" placeholder="નામ શોધો">
-      </div>
-      <div class="filter-group">
-        <label>લેનાર મોબાઇલ નંબર</label>
-        <input type="text" id="filterMobile" placeholder="મોબાઇલ શોધો">
-      </div>
-      <div class="filter-group">
-        <label>રકમ</label>
-        <input type="number" id="filterAmount" placeholder="રકમ">
-      </div>
-      <div class="filter-group">
-        <label>સ્થિતિ</label>
-        <select id="filterStatus">
-          <option value="all">બધા</option>
-          <option value="pending">બાકી</option>
-          <option value="completed">પૂર્ણ</option>
-        </select>
-      </div>
-      <div class="filter-group">
-        <label>તારીખથી</label>
-        <input type="date" id="filterDateFrom" placeholder="તારીખથી">
-      </div>
-      <div class="filter-group">
-        <label>તારીખ સુધી</label>
-        <input type="date" id="filterDateTo" placeholder="તારીખ સુધી">
-      </div>
-    </div>
-    <div class="filter-actions">
-      <button class="btn-filter" onclick="applyFilters()">ફિલ્ટર લાગુ કરો</button>
-      <button class="btn-filter btn-clear" onclick="clearFilters()">ક્લિયર</button>
-    </div>
-  </div>
-  
-  <div class="pull-refresh">⬇️ ખેંચો રિફ્રેશ કરવા માટે</div>
-  <div id="statsContainer" class="stats"></div>
-  <div id="historyContainer" class="history-list"></div>
-</div>
-
-<script>
-let allHistory=[];
-let filteredHistory=[];
-
-function loadHistory(){
-  allHistory=JSON.parse(localStorage.getItem("vasanBillHistory")||"[]");
-  filteredHistory=[...allHistory];
-  renderHistory();
-  updateStats();
-}
-
-function applyFilters(){
-  const name=document.getElementById("filterName").value.toLowerCase().trim();
-  const mobile=document.getElementById("filterMobile").value.trim();
-  const amount=parseFloat(document.getElementById("filterAmount").value)||0;
-  const status=document.getElementById("filterStatus").value;
-  const dateFrom=document.getElementById("filterDateFrom").value;
-  const dateTo=document.getElementById("filterDateTo").value;
-  
-  filteredHistory=allHistory.filter(bill=>{
-    const matchName=!name || (bill.lenar||"").toLowerCase().includes(name);
-    const matchMobile=!mobile || (bill.mobile||"").includes(mobile);
-    const billAmount=parseFloat((bill.total||"").replace("₹",""))||0;
-    const matchAmount=!amount || Math.abs(billAmount-amount)<1;
-    const matchStatus=status==="all" || bill.status===status;
-    
-    let matchDate=true;
-    if(dateFrom || dateTo){
-      const billDate=bill.date||"";
-      if(dateFrom && billDate<dateFrom)matchDate=false;
-      if(dateTo && billDate>dateTo)matchDate=false;
+  <style>
+    /* RESET */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
     }
-    
-    return matchName && matchMobile && matchAmount && matchStatus && matchDate;
-  });
-  
-  renderHistory();
-  updateStats();
-}
 
-function clearFilters(){
-  document.getElementById("filterName").value="";
-  document.getElementById("filterMobile").value="";
-  document.getElementById("filterAmount").value="";
-  document.getElementById("filterStatus").value="all";
-  document.getElementById("filterDateFrom").value="";
-  document.getElementById("filterDateTo").value="";
-  filteredHistory=[...allHistory];
-  renderHistory();
-  updateStats();
-}
+    body {
+      font-family: "Poppins", Arial, sans-serif;
+      background: #f3f6f9;
+      color: #1f2d3d;
+      padding: 12px;
+    }
 
-function updateStats(){
-  const statsContainer=document.getElementById("statsContainer");
-  let totalBills=filteredHistory.length;
-  let totalAmount=0;
-  let pendingAmount=0;
-  let completedAmount=0;
-  
-  filteredHistory.forEach(bill=>{
-    if(bill.withAmount && bill.total){
-      const amt=parseFloat((bill.total||"").replace("₹",""))||0;
-      totalAmount+=amt;
-      if(bill.status==="completed"){
-        completedAmount+=amt;
-      }else{
-        pendingAmount+=amt;
+    /* HEADER */
+    .header {
+      background: #2b3d52;
+      color: white;
+      padding: 16px;
+      border-radius: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .header h1 {
+      font-size: 20px;
+    }
+
+    .back-btn {
+      background: rgba(255, 255, 255, 0.15);
+      padding: 8px 16px;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    /* FILTER BOX */
+    .filters {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      margin-top: 20px;
+      box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .filters-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    .filter-row {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      /* responsive columns */
+    }
+
+    .filter-group label {
+      font-size: 13px;
+      margin-bottom: 6px;
+      color: #485460;
+    }
+
+    .filter-group input,
+    .filter-group select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #dfe4ea;
+      border-radius: 8px;
+      font-size: 15px;
+      background: #fafafa;
+    }
+
+    .filter-actions {
+      margin-top: 15px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn-filter {
+      flex: 1;
+      background: #2b3d52;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+    }
+
+    .btn-clear {
+      background: #ced6e0;
+      color: #2f3542;
+    }
+
+    /* STATS (MOBILE 2 per row, LARGE 4 per row) */
+    .stats {
+      margin-top: 20px;
+      display: grid;
+      gap: 14px;
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media(min-width:600px) {
+      .stats {
+        grid-template-columns: repeat(4, 1fr);
       }
     }
-  });
 
-  
-  
-  statsContainer.innerHTML=`
+    .stat-card {
+      background: white;
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+    }
+
+    .stat-value {
+      font-size: 22px;
+      font-weight: 700;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: #555;
+    }
+
+    /* HISTORY LIST */
+    .history-list {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .history-item {
+      background: white;
+      border-radius: 14px;
+      padding: 18px;
+      box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
+      transition: 0.25s;
+    }
+
+    .history-item:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+    }
+
+    .history-header {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .history-title {
+      font-size: 17px;
+      font-weight: 600;
+    }
+
+    .status-badge {
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .status-pending {
+      background: #ffeeba;
+      color: #856404;
+    }
+
+    .status-completed {
+      background: #d4edda;
+      color: #155724;
+    }
+
+    .history-date {
+      font-size: 13px;
+      background: #e9eef3;
+      padding: 6px 12px;
+      border-radius: 8px;
+      color: #333;
+    }
+
+    /* INFO GRID */
+    .history-info {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .history-info strong {
+      font-size: 12px;
+      color: #666;
+    }
+
+    .history-info span {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    /* ITEMS TABLE */
+    .history-items {
+      background: #f7f9fc;
+      padding: 12px;
+      border-radius: 10px;
+      overflow-x: auto;
+    }
+
+    .history-items table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .history-items th {
+      background: #2b3d52;
+      color: white;
+      padding: 8px;
+      font-size: 12px;
+    }
+
+    .history-items td {
+      padding: 8px;
+      border-bottom: 1px solid #ddd;
+      font-size: 13px;
+    }
+
+    /* PAYMENT INFO */
+    .payment-info {
+      background: #f7f9fc;
+      padding: 12px;
+      border-radius: 10px;
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: space-between;
+    }
+
+    /* PAYMENT INPUT - PERFECT ALIGNMENT */
+    .payment-input {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+      width: 100%;
+      align-items: stretch;
+      /* input & button same height */
+      flex-wrap: nowrap;
+      /* hamesha ek line me */
+    }
+
+    .payment-input input {
+      flex: 1;
+      /* input fills available space */
+      min-width: 0;
+      /* prevent overflow */
+      padding: 14px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      font-size: 15px;
+      box-sizing: border-box;
+      height: 48px;
+      /* fixed height to match button */
+    }
+
+    .payment-input button {
+      flex: 0 0 120px;
+      /* fixed width button */
+      padding: 14px;
+      border-radius: 10px;
+      border: none;
+      background: #28a745;
+      color: white;
+      font-weight: 600;
+      font-size: 15px;
+      cursor: pointer;
+      height: 48px;
+      /* same height as input */
+      white-space: nowrap;
+    }
+
+    /* MOBILE FIX - very small screens */
+    @media (max-width: 480px) {
+      .payment-input {
+        flex-wrap: nowrap;
+        /* still one line */
+        gap: 8px;
+      }
+
+      .payment-input input {
+        min-width: 0;
+        /* allow shrink */
+      }
+
+      .payment-input button {
+        flex: 0 0 100px;
+        /* slightly smaller button on mobile */
+      }
+    }
+
+
+    /* MOBILE FIX */
+    @media(max-width:480px) {
+      .payment-input input {
+        flex: 1 1 100%;
+        /* full width on small screens */
+        min-width: 0;
+      }
+    }
+
+    /* ACTION BUTTONS */
+    .history-actions {
+      margin-top: 14px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      font-weight: 600;
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-view {
+      background: #007bff;
+    }
+
+    .btn-update {
+      background: #28a745;
+    }
+
+    .btn-delete {
+      background: #dc3545;
+    }
+
+    /* RIPPLE EFFECT */
+    .btn::after {
+      content: "";
+      position: absolute;
+      width: 5px;
+      height: 5px;
+      background: rgba(255, 255, 255, 0.5);
+      border-radius: 50%;
+      transform: scale(1);
+      opacity: 0;
+      pointer-events: none;
+      transition: 0.4s;
+    }
+
+    .btn:active::after {
+      transform: scale(18);
+      opacity: 1;
+    }
+
+    /* INPUT FOCUS EFFECT */
+    input:focus,
+    select:focus {
+      border-color: #2b3d52;
+      box-shadow: 0 0 0 3px rgba(43, 61, 82, 0.2);
+      outline: none;
+    }
+
+    /* EMPTY STATE */
+    .empty-state {
+      background: white;
+      padding: 30px;
+      border-radius: 14px;
+      text-align: center;
+      box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .empty-state-icon {
+      font-size: 60px;
+      opacity: 0.4;
+    }
+
+    /* MOBILE FIXES */
+    @media(max-width:768px) {
+      .history-info {
+        grid-template-columns: 1fr;
+      }
+
+      .btn {
+        width: 100%;
+      }
+
+      .filter-actions button {
+        flex: 1;
+      }
+    }
+
+    /* PRINT FIX – COLOR EXACT */
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+
+    @media print {
+
+      /* सब hide */
+      body * {
+        visibility: hidden !important;
+      }
+
+      /* सिर्फ बिल दिखे */
+      #finalBillView,
+      #finalBillView * {
+        visibility: visible !important;
+      }
+
+      /* BILL को PDF में PERFECT CENTER + ORIGINAL SIZE में लाओ */
+      #finalBillView {
+        position: fixed !important;
+        top: 20px !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+
+        width: 520px !important;
+        /* 🔥 Real Width — Shrink नहीं होगा */
+        max-width: 520px !important;
+        /* Same fixed width */
+        margin: 0 auto !important;
+
+        background: white !important;
+        padding: 0 !important;
+        zoom: 1 !important;
+        /* ✔ Shrink रोकने के लिए */
+        scale: 1 !important;
+        /* ✔ Size पूरी रखने के लिए */
+      }
+
+      /* Page scaling हटाएँ */
+      @page {
+        size: auto;
+        margin: 0;
+      }
+
+
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>📋 બિલ ઇતિહાસ</h1>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <button id="backupBtn" class="back-btn" style="background:rgba(76,175,80,0.8);">💾 બેકઅપ</button>
+        <button class="back-btn" onclick="exportReport()" style="background:rgba(255,255,255,0.2);">📊 રિપોર્ટ</button>
+        <a href="index.html" class="back-btn">← પાછળ</a>
+      </div>
+    </div>
+
+    <div class="filters">
+      <div class="filters-title">🔍 ફિલ્ટર</div>
+      <div class="filter-row">
+        <div class="filter-group">
+          <label>લેનારનું નામ</label>
+          <input type="text" id="filterName" placeholder="નામ શોધો">
+        </div>
+        <div class="filter-group">
+          <label>લેનાર મોબાઇલ નંબર</label>
+          <input type="text" id="filterMobile" placeholder="મોબાઇલ શોધો">
+        </div>
+        <div class="filter-group">
+          <label>રકમ</label>
+          <input type="number" id="filterAmount" placeholder="રકમ">
+        </div>
+        <div class="filter-group">
+          <label>સ્થિતિ</label>
+          <select id="filterStatus">
+            <option value="all">બધા</option>
+            <option value="pending">બાકી</option>
+            <option value="completed">પૂર્ણ</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>તારીખથી</label>
+          <input type="date" id="filterDateFrom" placeholder="તારીખથી">
+        </div>
+        <div class="filter-group">
+          <label>તારીખ સુધી</label>
+          <input type="date" id="filterDateTo" placeholder="તારીખ સુધી">
+        </div>
+      </div>
+      <div class="filter-actions">
+        <button class="btn-filter" onclick="applyFilters()">ફિલ્ટર લાગુ કરો</button>
+        <button class="btn-filter btn-clear" onclick="clearFilters()">ક્લિયર</button>
+      </div>
+    </div>
+
+    <div class="pull-refresh">⬇️ ખેંચો રિફ્રેશ કરવા માટે</div>
+    <div id="statsContainer" class="stats"></div>
+    <div id="historyContainer" class="history-list"></div>
+  </div>
+
+  <script>
+    let allHistory = [];
+    let filteredHistory = [];
+
+    function loadHistory() {
+      allHistory = JSON.parse(localStorage.getItem("vasanBillHistory") || "[]");
+      filteredHistory = [...allHistory];
+      renderHistory();
+      updateStats();
+    }
+
+    function applyFilters() {
+      const name = document.getElementById("filterName").value.toLowerCase().trim();
+      const mobile = document.getElementById("filterMobile").value.trim();
+      const amount = parseFloat(document.getElementById("filterAmount").value) || 0;
+      const status = document.getElementById("filterStatus").value;
+      const dateFrom = document.getElementById("filterDateFrom").value;
+      const dateTo = document.getElementById("filterDateTo").value;
+
+      filteredHistory = allHistory.filter(bill => {
+        const matchName = !name || (bill.lenar || "").toLowerCase().includes(name);
+        const matchMobile = !mobile || (bill.mobile || "").includes(mobile);
+        const billAmount = parseFloat((bill.total || "").replace("₹", "")) || 0;
+        const matchAmount = !amount || Math.abs(billAmount - amount) < 1;
+        const matchStatus = status === "all" || bill.status === status;
+
+        let matchDate = true;
+        if (dateFrom || dateTo) {
+          const billDate = bill.date || "";
+          if (dateFrom && billDate < dateFrom) matchDate = false;
+          if (dateTo && billDate > dateTo) matchDate = false;
+        }
+
+        return matchName && matchMobile && matchAmount && matchStatus && matchDate;
+      });
+
+      renderHistory();
+      updateStats();
+    }
+
+    function clearFilters() {
+      document.getElementById("filterName").value = "";
+      document.getElementById("filterMobile").value = "";
+      document.getElementById("filterAmount").value = "";
+      document.getElementById("filterStatus").value = "all";
+      document.getElementById("filterDateFrom").value = "";
+      document.getElementById("filterDateTo").value = "";
+      filteredHistory = [...allHistory];
+      renderHistory();
+      updateStats();
+    }
+
+    function updateStats() {
+      const statsContainer = document.getElementById("statsContainer");
+      let totalBills = filteredHistory.length;
+      let totalAmount = 0;
+      let pendingAmount = 0;
+      let completedAmount = 0;
+
+      filteredHistory.forEach(bill => {
+        if (bill.withAmount && bill.total) {
+          const amt = parseFloat((bill.total || "").replace("₹", "")) || 0;
+          totalAmount += amt;
+          if (bill.status === "completed") {
+            completedAmount += amt;
+          } else {
+            pendingAmount += amt;
+          }
+        }
+      });
+
+
+
+      statsContainer.innerHTML = `
     <div class="stat-card">
       <div class="stat-value">${totalBills}</div>
       <div class="stat-label">કુલ બિલ</div>
@@ -589,13 +656,13 @@ function updateStats(){
       <div class="stat-label">પૂર્ણ</div>
     </div>
   `;
-}
+    }
 
-function renderHistory(){
-  const container=document.getElementById("historyContainer");
-  
-  if(filteredHistory.length===0){
-    container.innerHTML=`
+    function renderHistory() {
+      const container = document.getElementById("historyContainer");
+
+      if (filteredHistory.length === 0) {
+        container.innerHTML = `
       <div class="empty-state">
         <div class="empty-state-icon">📭</div>
         <h2>કોઈ બિલ મળ્યું નથી</h2>
@@ -603,78 +670,78 @@ function renderHistory(){
         <a href="bill_create.html" class="btn btn-view" style="text-decoration:none;display:inline-block;">નવું બિલ બનાવો</a>
       </div>
     `;
-    return;
-  }
-  
-  container.innerHTML=filteredHistory.map(bill=>{
-    const date=new Date(bill.timestamp);
-    const dateStr=date.toLocaleDateString("gu-IN",{
-      year:"numeric",
-      month:"short",
-      day:"numeric",
-      hour:"2-digit",
-      minute:"2-digit"
-    });
-    
-    const itemsHTML=bill.items||"";
-    const tempDiv=document.createElement("div");
-    tempDiv.innerHTML=itemsHTML;
-    const rows=tempDiv.querySelectorAll("tr");
-    let itemsList="";
-    let itemCounter=0;
-    rows.forEach(row=>{
-      const cells=row.querySelectorAll("td");
-      if(cells.length>0){
-        itemCounter++;
-        itemsList+=`<tr>`;
-        const firstCell=cells[0].textContent.trim();
-        if(!isNaN(firstCell) && firstCell.length<3){
-          cells.forEach(cell=>{
-            itemsList+=`<td>${cell.textContent}</td>`;
-          });
-        }else{
-          itemsList+=`<td style="text-align:center;font-weight:600;">${itemCounter}</td>`;
-          cells.forEach(cell=>{
-            itemsList+=`<td>${cell.textContent}</td>`;
-          });
-        }
-        itemsList+=`</tr>`;
+        return;
       }
-    });
-    
-    const totalAmount=parseFloat((bill.total||"").replace("₹",""))||0;
-    const paidAmount=bill.paidAmount||0;
-    const remainingAmount=totalAmount-paidAmount;
-    const status=bill.status||"pending";
-    
-    return`
+
+      container.innerHTML = filteredHistory.map(bill => {
+        const date = new Date(bill.timestamp);
+        const dateStr = date.toLocaleDateString("gu-IN", {
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+          hour: "2-digit",
+          minute: "2-digit"
+        });
+
+        const itemsHTML = bill.items || "";
+        const tempDiv = document.createElement("div");
+        tempDiv.innerHTML = itemsHTML;
+        const rows = tempDiv.querySelectorAll("tr");
+        let itemsList = "";
+        let itemCounter = 0;
+        rows.forEach(row => {
+          const cells = row.querySelectorAll("td");
+          if (cells.length > 0) {
+            itemCounter++;
+            itemsList += `<tr>`;
+            const firstCell = cells[0].textContent.trim();
+            if (!isNaN(firstCell) && firstCell.length < 3) {
+              cells.forEach(cell => {
+                itemsList += `<td>${cell.textContent}</td>`;
+              });
+            } else {
+              itemsList += `<td style="text-align:center;font-weight:600;">${itemCounter}</td>`;
+              cells.forEach(cell => {
+                itemsList += `<td>${cell.textContent}</td>`;
+              });
+            }
+            itemsList += `</tr>`;
+          }
+        });
+
+        const totalAmount = parseFloat((bill.total || "").replace("₹", "")) || 0;
+        const paidAmount = bill.paidAmount || 0;
+        const remainingAmount = totalAmount - paidAmount;
+        const status = bill.status || "pending";
+
+        return `
       <div class="history-item">
         <div class="history-header">
           <div>
-            <div class="history-title">${bill.lenar||"-"}</div>
-            <span class="status-badge status-${status}">${status==="completed"?"✅ પૂર્ણ":"⏳ બાકી"}</span>
+            <div class="history-title">${bill.lenar || "-"}</div>
+            <span class="status-badge status-${status}">${status === "completed" ? "✅ પૂર્ણ" : "⏳ બાકી"}</span>
           </div>
           <div class="history-date">${dateStr}</div>
         </div>
         <div class="history-info">
           <div>
             <strong>લેનાર:</strong>
-            <span>${bill.lenar||"-"}</span>
+            <span>${bill.lenar || "-"}</span>
           </div>
           <div>
             <strong>લેનાર મોબાઇલ નં.:</strong>
-            <span>${bill.mobile||"-"}</span>
+            <span>${bill.mobile || "-"}</span>
           </div>
           <div>
             <strong>દેનાર:</strong>
-            <span>${bill.denar||"-"}</span>
+            <span>${bill.denar || "-"}</span>
           </div>
           <div>
             <strong>તારીખ:</strong>
-            <span>${bill.date||"-"}</span>
+            <span>${bill.date || "-"}</span>
           </div>
         </div>
-        ${itemsList?`
+        ${itemsList ? `
         <div class="history-items">
           <table>
             <thead>
@@ -682,15 +749,15 @@ function renderHistory(){
                 <th style="width:50px;">ક્રમ</th>
                 <th>વસ્તુ</th>
                 <th>સંખ્યા</th>
-                ${bill.withAmount?"<th>રકમ</th>":""}
+                ${bill.withAmount ? "<th>રકમ</th>" : ""}
               </tr>
             </thead>
             <tbody>${itemsList}</tbody>
           </table>
-          ${bill.total?`<div class="history-total">કુલ: ${bill.total}</div>`:""}
+          ${bill.total ? `<div class="history-total">કુલ: ${bill.total}</div>` : ""}
         </div>
-        `:""}
-        ${bill.withAmount && totalAmount>0?`
+        `: ""}
+        ${bill.withAmount && totalAmount > 0 ? `
         <div class="payment-info">
           <div>
             <strong>કુલ રકમ:</strong>
@@ -702,64 +769,71 @@ function renderHistory(){
           </div>
           <div>
             <strong>બાકી:</strong>
-            <span style="color:${remainingAmount>0?"#dc3545":"#28a745"};">₹${remainingAmount.toLocaleString("en-IN")}</span>
+            <span style="color:${remainingAmount > 0 ? "#dc3545" : "#28a745"};">₹${remainingAmount.toLocaleString("en-IN")}</span>
           </div>
-          ${status==="pending"?`
+          ${status === "pending" ? `
           <div class="payment-input">
             <input type="number" id="paid_${bill.id}" placeholder="ચૂકવેલ રકમ" min="0" max="${totalAmount}" value="${paidAmount}">
             <button class="btn btn-update" onclick="updatePayment(${bill.id})">રકમ અપડેટ</button>
           </div>
-          `:""}
+          `: ""}
         </div>
-        `:""}
+        `: ""}
         <div class="history-actions">
           <button class="btn btn-view" onclick="viewBill(${bill.id})">👁️ જુઓ</button>
-          ${status==="pending"?`<button class="btn btn-update" onclick="markCompleted(${bill.id})">✅ પૂર્ણ</button>`:""}
+          <button class="btn" style="background:#fd7e14;" onclick="editBill(${bill.id})">✏️ એડિટ</button>
+          ${status === "pending" ? `<button class="btn btn-update" onclick="markCompleted(${bill.id})">✅ પૂર્ણ</button>` : ""}
           <button class="btn btn-delete" onclick="deleteBill(${bill.id})">🗑️ ડિલીટ</button>
+          <button class="btn" style="background:#25D366;" onclick="shareHistoryOnWhatsApp(${bill.id})">💬 WA શેર</button>
         </div>
       </div>
     `;
-  }).join("");
-}
+      }).join("");
+    }
+    
+    function editBill(id) {
+      localStorage.setItem("editBillId", id);
+      window.location.href = "bill_create.html";
+    }
 
-function updatePayment(id){
-  const bill=allHistory.find(b=>b.id===id);
-  if(!bill)return;
-  
-  const totalAmount=parseFloat((bill.total||"").replace("₹",""))||0;
-  const paidInput=document.getElementById(`paid_${id}`);
-  const paidAmount=parseFloat(paidInput.value)||0;
-  
-  if(paidAmount<0 || paidAmount>totalAmount){
-    alert("કૃપા કરીને માન્ય રકમ દાખલ કરો");
-    return;
-  }
-  
-  bill.paidAmount=paidAmount;
-  if(paidAmount>=totalAmount){
-    bill.status="completed";
-  }
-  
-  localStorage.setItem("vasanBillHistory",JSON.stringify(allHistory));
-  loadHistory();
-}
+    function updatePayment(id) {
+      const bill = allHistory.find(b => b.id === id);
+      if (!bill) return;
 
-function markCompleted(id){
-  if(!confirm("શું તમે આ બિલને પૂર્ણ માર્ક કરવા માંગો છો?"))return;
-  
-  const bill=allHistory.find(b=>b.id===id);
-  if(bill){
-    bill.status="completed";
-    bill.paidAmount=parseFloat((bill.total||"").replace("₹",""))||0;
-    localStorage.setItem("vasanBillHistory",JSON.stringify(allHistory));
-    loadHistory();
-  }
-}
-function viewBill(id){
-  const bill = allHistory.find(b => b.id === id);
-  if(!bill) return;
+      const totalAmount = parseFloat((bill.total || "").replace("₹", "")) || 0;
+      const paidInput = document.getElementById(`paid_${id}`);
+      const paidAmount = parseFloat(paidInput.value) || 0;
 
-  const billHTML = `
+      if (paidAmount < 0 || paidAmount > totalAmount) {
+        alert("કૃપા કરીને માન્ય રકમ દાખલ કરો");
+        return;
+      }
+
+      bill.paidAmount = paidAmount;
+      if (paidAmount >= totalAmount) {
+        bill.status = "completed";
+      }
+
+      localStorage.setItem("vasanBillHistory", JSON.stringify(allHistory));
+      loadHistory();
+    }
+
+    function markCompleted(id) {
+      if (!confirm("શું તમે આ બિલને પૂર્ણ માર્ક કરવા માંગો છો?")) return;
+
+      const bill = allHistory.find(b => b.id === id);
+      if (bill) {
+        bill.status = "completed";
+        bill.paidAmount = parseFloat((bill.total || "").replace("₹", "")) || 0;
+        localStorage.setItem("vasanBillHistory", JSON.stringify(allHistory));
+        loadHistory();
+      }
+    }
+    function viewBill(id) {
+      const bill = allHistory.find(b => b.id === id);
+      if (!bill) return;
+
+      const billHTML = `
   <div style="max-width:520px;margin:0 auto;padding:25px;background:#fff;border-radius:15px;box-shadow:0 15px 40px rgba(0,0,0,0.12);font-family:'Poppins',Arial,sans-serif;color:#2b3d52;">
     
     <!-- Header -->
@@ -774,27 +848,27 @@ function viewBill(id){
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0;">
       <div style="padding:12px;background:#f1f4f8;border-radius:10px;text-align:center;box-shadow:0 2px 6px rgba(0,0,0,0.05);">
         <strong style="display:block;color:#2b3d52;font-size:13px;">લેનાર</strong>
-        <div style="margin-top:4px;font-size:14px;">${bill.lenar||"-"}</div>
+        <div style="margin-top:4px;font-size:14px;">${bill.lenar || "-"}</div>
       </div>
       <div style="padding:12px;background:#f1f4f8;border-radius:10px;text-align:center;box-shadow:0 2px 6px rgba(0,0,0,0.05);">
         <strong style="display:block;color:#2b3d52;font-size:13px;">લેનાર મોબાઇલ નં.
 </strong>
-        <div style="margin-top:4px;font-size:14px;">${bill.mobile||"-"}</div>
+        <div style="margin-top:4px;font-size:14px;">${bill.mobile || "-"}</div>
       </div>
       <div style="padding:12px;background:#f1f4f8;border-radius:10px;text-align:center;box-shadow:0 2px 6px rgba(0,0,0,0.05);">
         <strong style="display:block;color:#2b3d52;font-size:13px;">દેનાર</strong>
-        <div style="margin-top:4px;font-size:14px;">${bill.denar||"-"}</div>
+        <div style="margin-top:4px;font-size:14px;">${bill.denar || "-"}</div>
       </div>
       <div style="padding:12px;background:#f1f4f8;border-radius:10px;text-align:center;box-shadow:0 2px 6px rgba(0,0,0,0.05);">
         <strong style="display:block;color:#2b3d52;font-size:13px;">તારીખ</strong>
-        <div style="margin-top:4px;font-size:14px;">${bill.date||"-"}</div>
+        <div style="margin-top:4px;font-size:14px;">${bill.date || "-"}</div>
       </div>
     </div>
 
     <!-- Items Table -->
     <table style="width:100%;border-collapse:collapse;margin-top:20px;">
       <thead>
-        ${bill.withAmount ? 
+        ${bill.withAmount ?
           `<tr>
             <th style="background:#2b3d52;color:white;padding:8px;">ક્રમ</th>
             <th style="background:#2b3d52;color:white;padding:8px;">વસ્તુ</th>
@@ -810,8 +884,8 @@ function viewBill(id){
       <tbody>
         ${bill.items || ""}
       </tbody>
-      ${bill.total ? 
-        `<tfoot>
+      ${bill.total ?
+          `<tfoot>
           <tr>
             <td colspan="${bill.withAmount ? 3 : 2}" style="text-align:right;font-weight:700;padding:10px;background:#e7edf3;">કુલ</td>
             ${bill.withAmount ? `<td style="font-weight:700;padding:10px;background:#e7edf3;">${bill.total}</td>` : ""}
@@ -834,8 +908,8 @@ function viewBill(id){
   </div>
   `;
 
-  const printWindow = window.open("", "_blank");
-printWindow.document.write(`
+      const printWindow = window.open("", "_blank");
+      printWindow.document.write(`
   <!DOCTYPE html>
   <html>
   <head>
@@ -895,121 +969,237 @@ printWindow.document.write(`
   <body>${billHTML}</body>
   </html>
 `);
-printWindow.document.close();
-setTimeout(() => {
-  printWindow.print();
-}, 500);
+      printWindow.document.close();
+      setTimeout(() => {
+        printWindow.print();
+      }, 500);
 
-}
+    }
 
-function deleteBill(id){
-  if(!confirm("શું તમે આ બિલ ડિલીટ કરવા માંગો છો?"))return;
-  
-  allHistory=allHistory.filter(b=>b.id!==id);
-  localStorage.setItem("vasanBillHistory",JSON.stringify(allHistory));
-  loadHistory();
-}
+    function deleteBill(id) {
+      if (!confirm("શું તમે આ બિલ ડિલીટ કરવા માંગો છો?")) return;
 
-document.getElementById("backupBtn").addEventListener("click", function() {
-  const now = Date.now();
-  const lastBackup = localStorage.getItem("lastBackupDate");
-  const backupInterval = 1 * 24 * 60 * 60 * 1000; // 1 days
+      allHistory = allHistory.filter(b => b.id !== id);
+      localStorage.setItem("vasanBillHistory", JSON.stringify(allHistory));
+      loadHistory();
+    }
 
-  // fresh read on click
-  // if (lastBackup && (now - parseInt(lastBackup)) < backupInterval) {
-  //   alert("⚠ તમારું છેલ્લું બેકઅપ 1 દિવસથી ઓછું છે. ફરી ડાઉનલોડ કરવા માટે 1 દિવસ રાહ જુઓ.");
-  //   return;
-  // }
+    function shareHistoryOnWhatsApp(id) {
+      const bill = allHistory.find(b => b.id === id);
+      if (!bill) return;
 
-  const history = JSON.parse(localStorage.getItem("vasanBillHistory") || "[]");
-  if (history.length === 0) {
-    alert("⚠ કોઈ બિલ નથી! પહેલા બિલ બનાવો, પછી બેકઅપ લો.");
-    return;
-  }
+      if (!bill.mobile || !/^[0-9]{10}$/.test(bill.mobile)) {
+        alert("સાચો 10 અંકનો મોબાઇલ નંબર ઉપલબ્ધ નથી");
+        return;
+      }
 
-  const backupData = {
-    version: "1.0",
-    exportDate: new Date().toISOString(),
-    totalBills: history.length,
-    bills: history
-  };
+      const waWindow = window.open("", "_blank");
+      waWindow.document.write("<div style='font-family:sans-serif;padding:30px;text-align:center;color:#2b3d52;'><h2>WhatsApp ખુલી રહ્યું છે...</h2><p>બિલ તમારા ફોનમાં <b>ડાઉનલોડ</b> થઈ ગયું છે.</p><p>WhatsApp ખુલે એટલે તેને <b>Attach (📎)</b> કરીને મોકલી આપો.</p></div>");
 
-  const dataStr = JSON.stringify(backupData, null, 2);
-  const dataBlob = new Blob([dataStr], { type: "application/json" });
-  const url = URL.createObjectURL(dataBlob);
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = "Vasan_Bill_Backup.json";
-  link.click();
-  URL.revokeObjectURL(url);
+      const billHTML = `
+  <div id="tempBillForShare" style="width:520px;max-width:520px;margin:0 auto;padding:25px;background:#fff;border-radius:15px;border:2px solid #2b3d52;font-family:'Poppins',Arial,sans-serif;color:#2b3d52;position:absolute;left:-9999px;top:0;">
+    <style>
+      #tempBillForShare table { width:100%; border-collapse:collapse; margin-top:20px; }
+      #tempBillForShare th, #tempBillForShare td { border:1px solid #ddd !important; padding:10px !important; text-align:center !important; font-size:14px !important; }
+      #tempBillForShare th { background:#2b3d52 !important; color:white !important; font-weight:600 !important; }
+      #tempBillForShare tr:nth-child(even) td { background:#f8f9fa !important; }
+    </style>
+    <!-- Header -->
+    <div style="text-align:center;margin-bottom:20px;">
+      <div style="font-size:24px;font-weight:700;">🙏 જય સુરાપુરા 🙏</div>
+      <div style="font-size:12px;color:#555;margin:5px 0;">🙏 જય મેલડી માં 🙏 જય બુટભવાની માં 🙏 જય ખોડિયાર માં 🙏</div>
+      <h2 style="margin:12px 0;color:#2b3d52;font-size:22px;border-bottom:2px solid #2b3d52;padding-bottom:6px;">ઉપલી ફળી મઢ વાસણ બિલ</h2>
+      <div style="font-size:12px;color:#666;">મુ.- મદાવા • ફોન: +91-960103265</div>
+    </div>
+    <!-- Customer Info -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0;">
+      <div style="padding:12px;background:#f1f4f8;border-radius:10px;text-align:center;">
+        <strong style="display:block;color:#2b3d52;font-size:13px;">લેનાર</strong>
+        <div style="margin-top:4px;font-size:14px;">${bill.lenar || "-"}</div>
+      </div>
+      <div style="padding:12px;background:#f1f4f8;border-radius:10px;text-align:center;">
+        <strong style="display:block;color:#2b3d52;font-size:13px;">લેનાર મોબાઇલ નં.</strong>
+        <div style="margin-top:4px;font-size:14px;">${bill.mobile || "-"}</div>
+      </div>
+      <div style="padding:12px;background:#f1f4f8;border-radius:10px;text-align:center;">
+        <strong style="display:block;color:#2b3d52;font-size:13px;">દેનાર</strong>
+        <div style="margin-top:4px;font-size:14px;">${bill.denar || "-"}</div>
+      </div>
+      <div style="padding:12px;background:#f1f4f8;border-radius:10px;text-align:center;">
+        <strong style="display:block;color:#2b3d52;font-size:13px;">તારીખ</strong>
+        <div style="margin-top:4px;font-size:14px;">${bill.date || "-"}</div>
+      </div>
+    </div>
+    <!-- Items Table -->
+    <table>
+      <thead>
+        ${bill.withAmount ?
+          `<tr>
+            <th>ક્રમ</th>
+            <th>વસ્તુ</th>
+            <th>સંખ્યા</th>
+            <th>રકમ</th>
+          </tr>` :
+          `<tr>
+            <th>ક્રમ</th>
+            <th>વસ્તુ</th>
+            <th>સંખ્યા</th>
+          </tr>`}
+      </thead>
+      <tbody>
+        ${bill.items || ""}
+      </tbody>
+      ${bill.total ?
+          `<tfoot>
+          <tr>
+            <td colspan="${bill.withAmount ? 3 : 2}" style="text-align:right !important;font-weight:700 !important;background:#e7edf3 !important;">કુલ</td>
+            ${bill.withAmount ? `<td style="font-weight:700 !important;background:#e7edf3 !important;">${bill.total}</td>` : ""}
+          </tr>
+        </tfoot>` : ""}
+    </table>
+    <!-- Footer -->
+    <div style="text-align:center;margin-top:20px;padding-top:15px;border-top:1px dashed #ccc;color:#666;font-size:13px;line-height:1.5;">
+      🙏 જય માતાજી 🙏<br>
+      **બિલ સાચવો અને આવનારા મુલાકાત માટે લાવો**<br>
+      **આવતી વખતે વાસણ સાથે લાવો અને સ્વચ્છતા જાળવો**<br>
+      **તમારા મુલાકાત માટે આભાર!**
+    </div>
+    <div style="text-align:center;font-size:10px;color:#999;margin-top:10px;">
+      બનાવનાર: રાજુ
+    </div>
+  </div>
+  `;
 
-  // update localStorage
-  localStorage.setItem("lastBackupDate", now.toString());
-  localStorage.setItem("lastAutoBackup", now.toString());
-  alert("✅ બેકઅપ સફળતાપૂર્વક ડાઉનલોડ થયો!");
-});
+      const container = document.createElement("div");
+      container.innerHTML = billHTML;
+      document.body.appendChild(container);
 
-/*
-function autoBackup() {
-  const history = JSON.parse(localStorage.getItem("vasanBillHistory") || "[]");
-  if (history.length === 0) return;
+      const finalDiv = document.getElementById("tempBillForShare");
 
-  const lastBackup = localStorage.getItem("lastAutoBackup");
-  const now = Date.now();
-  const fifteenDays = 15 * 24 * 60 * 60 * 1000; // 15 din in milliseconds
+      html2canvas(finalDiv, {
+        scale: 3,
+        backgroundColor: "#ffffff",
+        useCORS: true
+      }).then(canvas => {
+        document.body.removeChild(container);
 
-  // Agar last backup 15 din pehle ka hai, to backup le
-  if (!lastBackup || (now - parseInt(lastBackup)) > fifteenDays) {
-    const backupData = {
-      version: "1.0",
-      exportDate: new Date().toISOString(),
-      totalBills: history.length,
-      bills: history
-    };
+        const link = document.createElement("a");
+        link.download = `Vasan_Bill_${bill.lenar}.png`;
+        link.href = canvas.toDataURL("image/png");
+        link.click();
 
-    const dataStr = JSON.stringify(backupData, null, 2);
-    const dataBlob = new Blob([dataStr], { type: "application/json" });
-    const url = URL.createObjectURL(dataBlob);
-    const link = document.createElement("a");
-    link.href = url;
+        setTimeout(() => {
+          waWindow.location.href = `https://wa.me/91${bill.mobile}`;
+        }, 500);
 
-    // Filename me date add karte hain
-    const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
-    link.download = `Vasan_Bill_Backup_${today}.json`;
+      }).catch(err => {
+        if (document.body.contains(container)) document.body.removeChild(container);
+        console.error(err);
+        waWindow.close();
+        alert("ઇમેજ બનાવવામાં ભૂલ આવી.");
+      });
+    }
 
-    link.style.display = "none";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
+    document.getElementById("backupBtn").addEventListener("click", function () {
+      const now = Date.now();
+      const lastBackup = localStorage.getItem("lastBackupDate");
+      const backupInterval = 1 * 24 * 60 * 60 * 1000; // 1 days
 
-    localStorage.setItem("lastAutoBackup", now.toString());
-    localStorage.setItem("lastBackupDate", now.toString());
-  } else {
-    const remainingDays = Math.ceil((fifteenDays - (now - parseInt(lastBackup))) / (24 * 60 * 60 * 1000));
-    // alert(`⏳ Auto backup will be available after ${remainingDays} days.`);
-  }
-}
-function checkBackupReminder() {
-  const lastManualBackup = localStorage.getItem("lastBackupDate");
-  const now = Date.now();
-  const backupInterval = 15 * 24 * 60 * 60 * 1000; // 15 દિવસ
+      // fresh read on click
+      // if (lastBackup && (now - parseInt(lastBackup)) < backupInterval) {
+      //   alert("⚠ તમારું છેલ્લું બેકઅપ 1 દિવસથી ઓછું છે. ફરી ડાઉનલોડ કરવા માટે 1 દિવસ રાહ જુઓ.");
+      //   return;
+      // }
 
-  // જો ક્યારેય મેન્યુઅલ બેકઅપ ન લેવામાં આવ્યું હોય
-  if (!lastManualBackup) {
-    alert("⚠ તમે હજુ સુધી મેન્યુઅલ બેકઅપ લીધો નથી! કૃપા કરીને તરત બેકઅપ લઈ લો.");
-    return;
-  }
+      const history = JSON.parse(localStorage.getItem("vasanBillHistory") || "[]");
+      if (history.length === 0) {
+        alert("⚠ કોઈ બિલ નથી! પહેલા બિલ બનાવો, પછી બેકઅપ લો.");
+        return;
+      }
 
-  // જો છેલ્લું બેકઅપ 15 દિવસથી વધારે જૂનું હોય
-  if ((now - parseInt(lastManualBackup)) > backupInterval) {
-    alert("⚠ તમારું બેકઅપ 15 દિવસથી વધારે જૂનું છે! કૃપા કરીને તરત મેન્યુઅલ બેકઅપ લો.");
-  }
-}   */
+      const backupData = {
+        version: "1.0",
+        exportDate: new Date().toISOString(),
+        totalBills: history.length,
+        bills: history
+      };
+
+      const dataStr = JSON.stringify(backupData, null, 2);
+      const dataBlob = new Blob([dataStr], { type: "application/json" });
+      const url = URL.createObjectURL(dataBlob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "Vasan_Bill_Backup.json";
+      link.click();
+      URL.revokeObjectURL(url);
+
+      // update localStorage
+      localStorage.setItem("lastBackupDate", now.toString());
+      localStorage.setItem("lastAutoBackup", now.toString());
+      alert("✅ બેકઅપ સફળતાપૂર્વક ડાઉનલોડ થયો!");
+    });
+
+    /*
+    function autoBackup() {
+      const history = JSON.parse(localStorage.getItem("vasanBillHistory") || "[]");
+      if (history.length === 0) return;
+    
+      const lastBackup = localStorage.getItem("lastAutoBackup");
+      const now = Date.now();
+      const fifteenDays = 15 * 24 * 60 * 60 * 1000; // 15 din in milliseconds
+    
+      // Agar last backup 15 din pehle ka hai, to backup le
+      if (!lastBackup || (now - parseInt(lastBackup)) > fifteenDays) {
+        const backupData = {
+          version: "1.0",
+          exportDate: new Date().toISOString(),
+          totalBills: history.length,
+          bills: history
+        };
+    
+        const dataStr = JSON.stringify(backupData, null, 2);
+        const dataBlob = new Blob([dataStr], { type: "application/json" });
+        const url = URL.createObjectURL(dataBlob);
+        const link = document.createElement("a");
+        link.href = url;
+    
+        // Filename me date add karte hain
+        const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+        link.download = `Vasan_Bill_Backup_${today}.json`;
+    
+        link.style.display = "none";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+    
+        localStorage.setItem("lastAutoBackup", now.toString());
+        localStorage.setItem("lastBackupDate", now.toString());
+      } else {
+        const remainingDays = Math.ceil((fifteenDays - (now - parseInt(lastBackup))) / (24 * 60 * 60 * 1000));
+        // alert(`⏳ Auto backup will be available after ${remainingDays} days.`);
+      }
+    }
+    function checkBackupReminder() {
+      const lastManualBackup = localStorage.getItem("lastBackupDate");
+      const now = Date.now();
+      const backupInterval = 15 * 24 * 60 * 60 * 1000; // 15 દિવસ
+    
+      // જો ક્યારેય મેન્યુઅલ બેકઅપ ન લેવામાં આવ્યું હોય
+      if (!lastManualBackup) {
+        alert("⚠ તમે હજુ સુધી મેન્યુઅલ બેકઅપ લીધો નથી! કૃપા કરીને તરત બેકઅપ લઈ લો.");
+        return;
+      }
+    
+      // જો છેલ્લું બેકઅપ 15 દિવસથી વધારે જૂનું હોય
+      if ((now - parseInt(lastManualBackup)) > backupInterval) {
+        alert("⚠ તમારું બેકઅપ 15 દિવસથી વધારે જૂનું છે! કૃપા કરીને તરત મેન્યુઅલ બેકઅપ લો.");
+      }
+    }   */
 
 
-function exportReport(){
-  const exportMenu=`
+    function exportReport() {
+      const exportMenu = `
     <div style="position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:10000;display:flex;align-items:center;justify-content:center;padding:20px;">
       <div style="background:white;border-radius:12px;padding:30px;max-width:400px;width:100%;">
         <h2 style="margin-bottom:20px;color:#2b3d52;">રિપોર્ટ એક્સપોર્ટ</h2>
@@ -1022,19 +1212,19 @@ function exportReport(){
       </div>
     </div>
   `;
-  document.body.insertAdjacentHTML("beforeend",exportMenu);
-}
+      document.body.insertAdjacentHTML("beforeend", exportMenu);
+    }
 
-function closeExportMenu(){
-  document.querySelector("div[style*='z-index:10000']")?.remove();
-}
+    function closeExportMenu() {
+      document.querySelector("div[style*='z-index:10000']")?.remove();
+    }
 
-async function exportAsImage(){
-  closeExportMenu();
-  const reportHTML = generateReportHTML();
+    async function exportAsImage() {
+      closeExportMenu();
+      const reportHTML = generateReportHTML();
 
-  const tempDiv = document.createElement("div");
-  tempDiv.innerHTML = `
+      const tempDiv = document.createElement("div");
+      tempDiv.innerHTML = `
     <style>
       body { font-family: "Poppins", Arial, sans-serif; }
 
@@ -1074,34 +1264,34 @@ async function exportAsImage(){
     ${reportHTML}
   `;
 
-  tempDiv.style.position = "absolute";
-  tempDiv.style.left = "-9999px";
-  tempDiv.style.width = "900px";
-  tempDiv.style.background = "white";
-  tempDiv.style.padding = "20px";
-  tempDiv.style.boxSizing = "border-box";
+      tempDiv.style.position = "absolute";
+      tempDiv.style.left = "-9999px";
+      tempDiv.style.width = "900px";
+      tempDiv.style.background = "white";
+      tempDiv.style.padding = "20px";
+      tempDiv.style.boxSizing = "border-box";
 
-  document.body.appendChild(tempDiv);
+      document.body.appendChild(tempDiv);
 
-  const canvas = await html2canvas(tempDiv, {
-    scale: 2,
-    backgroundColor: "#fff"
-  });
+      const canvas = await html2canvas(tempDiv, {
+        scale: 2,
+        backgroundColor: "#fff"
+      });
 
-  const link = document.createElement("a");
-  link.download = `Vasan_Bill_Report_${new Date().toISOString().split("T")[0]}.png`;
-  link.href = canvas.toDataURL("image/png");
-  link.click();
+      const link = document.createElement("a");
+      link.download = `Vasan_Bill_Report_${new Date().toISOString().split("T")[0]}.png`;
+      link.href = canvas.toDataURL("image/png");
+      link.click();
 
-  document.body.removeChild(tempDiv);
-}
+      document.body.removeChild(tempDiv);
+    }
 
-function exportAsPDF() {
-  closeExportMenu();
-  const reportHTML = generateReportHTML();
-  const printWindow = window.open("", "_blank");
+    function exportAsPDF() {
+      closeExportMenu();
+      const reportHTML = generateReportHTML();
+      const printWindow = window.open("", "_blank");
 
-  printWindow.document.write(`
+      printWindow.document.write(`
     <!DOCTYPE html>
     <html>
     <head>
@@ -1162,88 +1352,88 @@ function exportAsPDF() {
     </html>
   `);
 
-  printWindow.document.close();
+      printWindow.document.close();
 
-  setTimeout(() => {
-    printWindow.focus();
-    printWindow.print();
-  }, 500);
-}
-
-
-
-function exportAsExcel(){
-  closeExportMenu();
-  let csv="નામ,મોબાઇલ,તારીખ,કુલ રકમ,ચૂકવેલ,બાકી,સ્થિતિ,વસ્તુઓ\n";
-  
-  filteredHistory.forEach(bill=>{
-    const totalAmount=parseFloat((bill.total||"").replace("₹",""))||0;
-    const paidAmount=bill.paidAmount||0;
-    const remainingAmount=totalAmount-paidAmount;
-    const status=bill.status==="completed"?"પૂર્ણ":"બાકી";
-    
-    const itemsHTML=bill.items||"";
-    const tempDiv=document.createElement("div");
-    tempDiv.innerHTML=itemsHTML;
-    const rows=tempDiv.querySelectorAll("tr");
-    let itemsList="";
-    rows.forEach((row,idx)=>{
-      const cells=row.querySelectorAll("td");
-      if(cells.length>0){
-        if(idx>0)itemsList+="; ";
-        itemsList+=cells[0].textContent+"("+cells[1].textContent+")";
-      }
-    });
-    
-    csv+=`"${bill.lenar||"-"}","${bill.mobile||"-"}","${bill.date||"-"}","${totalAmount}","${paidAmount}","${remainingAmount}","${status}","${itemsList}"\n`;
-  });
-  
-  const blob=new Blob(["\ufeff"+csv],{type:"text/csv;charset=utf-8;"});
-  const link=document.createElement("a");
-  link.href=URL.createObjectURL(blob);
-  link.download=`Vasan_Bill_Report_${new Date().toISOString().split("T")[0]}.csv`;
-  link.click();
-}
-
-function generateReportHTML(){
-  let totalBills=filteredHistory.length;
-  let totalAmount=0;
-  let pendingAmount=0;
-  let completedAmount=0;
-  let pendingBills=0;
-  let completedBills=0;
-  
-  filteredHistory.forEach(bill=>{
-    if(bill.withAmount && bill.total){
-      const amt=parseFloat((bill.total||"").replace("₹",""))||0;
-      totalAmount+=amt;
-      if(bill.status==="completed"){
-        completedAmount+=amt;
-        completedBills++;
-      }else{
-        pendingAmount+=amt;
-        pendingBills++;
-      }
+      setTimeout(() => {
+        printWindow.focus();
+        printWindow.print();
+      }, 500);
     }
-  });
 
-  const today = new Date();
-  const existingReportDate = today.toLocaleDateString("gu-IN");
 
-  // ===== Date range (filter ya min-max) =====
-  let allDates = filteredHistory.map(b=>b.date).filter(d=>d);
-  let minDate = allDates.length ? allDates.reduce((a,b)=>a<b?a:b) : null;
-  let maxDate = allDates.length ? allDates.reduce((a,b)=>a>b?a:b) : null;
 
-  const filterDateFrom = document.getElementById("filterDateFrom").value;
-  const filterDateTo = document.getElementById("filterDateTo").value;
+    function exportAsExcel() {
+      closeExportMenu();
+      let csv = "નામ,મોબાઇલ,તારીખ,કુલ રકમ,ચૂકવેલ,બાકી,સ્થિતિ,વસ્તુઓ\n";
 
-  const reportStartDate = filterDateFrom || minDate || existingReportDate;
-  const reportEndDate = filterDateTo || maxDate || existingReportDate;
+      filteredHistory.forEach(bill => {
+        const totalAmount = parseFloat((bill.total || "").replace("₹", "")) || 0;
+        const paidAmount = bill.paidAmount || 0;
+        const remainingAmount = totalAmount - paidAmount;
+        const status = bill.status === "completed" ? "પૂર્ણ" : "બાકી";
 
-  const dateRangeText = `${new Date(reportStartDate).toLocaleDateString("gu-IN")} થી ${new Date(reportEndDate).toLocaleDateString("gu-IN")}`;
+        const itemsHTML = bill.items || "";
+        const tempDiv = document.createElement("div");
+        tempDiv.innerHTML = itemsHTML;
+        const rows = tempDiv.querySelectorAll("tr");
+        let itemsList = "";
+        rows.forEach((row, idx) => {
+          const cells = row.querySelectorAll("td");
+          if (cells.length > 0) {
+            if (idx > 0) itemsList += "; ";
+            itemsList += cells[0].textContent + "(" + cells[1].textContent + ")";
+          }
+        });
 
-  let reportHTML = `
+        csv += `"${bill.lenar || "-"}","${bill.mobile || "-"}","${bill.date || "-"}","${totalAmount}","${paidAmount}","${remainingAmount}","${status}","${itemsList}"\n`;
+      });
+
+      const blob = new Blob(["\ufeff" + csv], { type: "text/csv;charset=utf-8;" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = `Vasan_Bill_Report_${new Date().toISOString().split("T")[0]}.csv`;
+      link.click();
+    }
+
+    function generateReportHTML() {
+      let totalBills = filteredHistory.length;
+      let totalAmount = 0;
+      let pendingAmount = 0;
+      let completedAmount = 0;
+      let pendingBills = 0;
+      let completedBills = 0;
+
+      filteredHistory.forEach(bill => {
+        if (bill.withAmount && bill.total) {
+          const amt = parseFloat((bill.total || "").replace("₹", "")) || 0;
+          totalAmount += amt;
+          if (bill.status === "completed") {
+            completedAmount += amt;
+            completedBills++;
+          } else {
+            pendingAmount += amt;
+            pendingBills++;
+          }
+        }
+      });
+
+      const today = new Date();
+      const existingReportDate = today.toLocaleDateString("gu-IN");
+
+      // ===== Date range (filter ya min-max) =====
+      let allDates = filteredHistory.map(b => b.date).filter(d => d);
+      let minDate = allDates.length ? allDates.reduce((a, b) => a < b ? a : b) : null;
+      let maxDate = allDates.length ? allDates.reduce((a, b) => a > b ? a : b) : null;
+
+      const filterDateFrom = document.getElementById("filterDateFrom").value;
+      const filterDateTo = document.getElementById("filterDateTo").value;
+
+      const reportStartDate = filterDateFrom || minDate || existingReportDate;
+      const reportEndDate = filterDateTo || maxDate || existingReportDate;
+
+      const dateRangeText = `${new Date(reportStartDate).toLocaleDateString("gu-IN")} થી ${new Date(reportEndDate).toLocaleDateString("gu-IN")}`;
+
+      let reportHTML = `
     <h1 style="text-align:center; color:#2b3d52;">વાસણ બિલ રિપોર્ટ</h1>
     <h3 style="text-align:center; color:#2b3d52;">ઉપલી ફળી મઢ</h3>
 
@@ -1275,28 +1465,28 @@ function generateReportHTML(){
       <tbody>
   `;
 
-  filteredHistory.forEach((bill, idx) => {
-    const totalAmount = parseFloat((bill.total || "").replace("₹", "")) || 0;
-    const paidAmount = bill.paidAmount || 0;
-    const remainingAmount = totalAmount - paidAmount;
-    const status = bill.status === "completed" ? "પૂર્ણ" : "બાકી";
+      filteredHistory.forEach((bill, idx) => {
+        const totalAmount = parseFloat((bill.total || "").replace("₹", "")) || 0;
+        const paidAmount = bill.paidAmount || 0;
+        const remainingAmount = totalAmount - paidAmount;
+        const status = bill.status === "completed" ? "પૂર્ણ" : "બાકી";
 
-    const rowBG = (idx % 2 === 0) ? "background:#f8f9fa;" : "";
+        const rowBG = (idx % 2 === 0) ? "background:#f8f9fa;" : "";
 
-    const itemsHTML = bill.items || "";
-    const tempDiv = document.createElement("div");
-    tempDiv.innerHTML = itemsHTML;
-    const rows = tempDiv.querySelectorAll("tr");
-    let itemsList = "";
-    rows.forEach((row, i) => {
-      const cells = row.querySelectorAll("td");
-      if (cells.length > 0) {
-        if (i > 0) itemsList += ", ";
-        itemsList += cells[0].textContent + "(" + cells[1].textContent + ")";
-      }
-    });
+        const itemsHTML = bill.items || "";
+        const tempDiv = document.createElement("div");
+        tempDiv.innerHTML = itemsHTML;
+        const rows = tempDiv.querySelectorAll("tr");
+        let itemsList = "";
+        rows.forEach((row, i) => {
+          const cells = row.querySelectorAll("td");
+          if (cells.length > 0) {
+            if (i > 0) itemsList += ", ";
+            itemsList += cells[0].textContent + "(" + cells[1].textContent + ")";
+          }
+        });
 
-    reportHTML += `
+        reportHTML += `
       <tr style="${rowBG}">
         <td style="border:1px solid #ddd; padding:10px;">${bill.lenar || "-"}</td>
         <td style="border:1px solid #ddd; padding:10px;">${bill.mobile || "-"}</td>
@@ -1308,57 +1498,58 @@ function generateReportHTML(){
         <td style="border:1px solid #ddd; padding:10px;">${itemsList || "-"}</td>
       </tr>
     `;
-  });
+      });
 
-  reportHTML += `
+      reportHTML += `
       </tbody>
     </table>
   `;
 
-  return reportHTML;
-}
-
-
-let touchStartY=0;
-let touchEndY=0;
-let isRefreshing=false;
-
-document.addEventListener("touchstart",function(e){
-  if(window.scrollY===0){
-    touchStartY=e.touches[0].clientY;
-  }
-},false);
-
-document.addEventListener("touchmove",function(e){
-  if(window.scrollY===0 && touchStartY>0){
-    const currentY=e.touches[0].clientY;
-    const diff=currentY-touchStartY;
-    if(diff>50 && !isRefreshing){
-      document.querySelector(".pull-refresh").classList.add("active");
+      return reportHTML;
     }
-  }
-},false);
 
-document.addEventListener("touchend",function(e){
-  if(window.scrollY===0 && touchStartY>0){
-    touchEndY=e.changedTouches[0].clientY;
-    const diff=touchEndY-touchStartY;
-    if(diff>100 && !isRefreshing){
-      isRefreshing=true;
-      loadHistory();
-      setTimeout(()=>{
-        isRefreshing=false;
-        document.querySelector(".pull-refresh").classList.remove("active");
-      },1000);
-    }
-  }
-  touchStartY=0;
-},false);
 
-loadHistory();
-// autoBackup();
-// checkBackupReminder();
-</script>
-<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    let touchStartY = 0;
+    let touchEndY = 0;
+    let isRefreshing = false;
+
+    document.addEventListener("touchstart", function (e) {
+      if (window.scrollY === 0) {
+        touchStartY = e.touches[0].clientY;
+      }
+    }, false);
+
+    document.addEventListener("touchmove", function (e) {
+      if (window.scrollY === 0 && touchStartY > 0) {
+        const currentY = e.touches[0].clientY;
+        const diff = currentY - touchStartY;
+        if (diff > 50 && !isRefreshing) {
+          document.querySelector(".pull-refresh").classList.add("active");
+        }
+      }
+    }, false);
+
+    document.addEventListener("touchend", function (e) {
+      if (window.scrollY === 0 && touchStartY > 0) {
+        touchEndY = e.changedTouches[0].clientY;
+        const diff = touchEndY - touchStartY;
+        if (diff > 100 && !isRefreshing) {
+          isRefreshing = true;
+          loadHistory();
+          setTimeout(() => {
+            isRefreshing = false;
+            document.querySelector(".pull-refresh").classList.remove("active");
+          }, 1000);
+        }
+      }
+      touchStartY = 0;
+    }, false);
+
+    loadHistory();
+    // autoBackup();
+    // checkBackupReminder();
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 </body>
+
 </html>

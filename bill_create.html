@@ -796,6 +796,7 @@ tr {
 <div id="printBtn" class="no-print" style="display:none;">
   <button id="printPDF" onclick="printBill()">🖨️ પ્રિન્ટ / PDF</button>
   <button id="printIMG" onclick="downloadImage()">🖼️ ઇમેજ ડાઉનલોડ કરો</button>
+  <button id="shareWA" onclick="shareOnWhatsApp()" style="background:#25D366;color:white;font-size:16px;padding:10px 22px;border-radius:6px;border:none;cursor:pointer;">💬 WhatsApp</button>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
@@ -1130,7 +1131,7 @@ box-shadow:0 15px 30px rgba(0,0,0,0.12);font-family:'Poppins',Arial,sans-serif;c
   <!-- Header -->
   <div style="text-align:center;margin-bottom:15px;">
     <h6 style="margin:0;font-size:18px;font-weight:700;">🙏 જય સુરાપુરા 🙏</h6>
-    <p style="font-size:12px;color:#555;margin:5px 0;">🙏 જય મેલડી માં 🙏  જય બુટભવાણી માં 🙏 જય ખોડિયાર માં 🙏</p>
+    <p style="font-size:12px;color:#555;margin:5px 0;">🙏 જય મેલડી માં 🙏  જય બુટભવાની માં 🙏 જય ખોડિયાર માં 🙏</p>
     <h2 style="margin:10px 0;color:#2b3d52;font-size:20px;border-bottom:2px solid #2b3d52;padding-bottom:5px;">
       ઉપલી ફળી મઢ વાસણ બિલ
     </h2>
@@ -1222,33 +1223,96 @@ saveBillToHistory(lenar,mobile,denar,date,list,formattedTotal,withAmount);
 }
 
 function saveBillToHistory(lenar,mobile,denar,date,itemsList,total,withAmount){
-  const billData={
-    id:Date.now(),
-    lenar:lenar,
-    mobile:mobile,
-    denar:denar,
-    date:date,
-    items:itemsList,
-    total:total,
-    withAmount:withAmount,
-    status:"pending",
-    paidAmount:0,
-    timestamp:new Date().toISOString()
-  };
-  
+  const editId = localStorage.getItem("editBillId");
   let history=JSON.parse(localStorage.getItem("vasanBillHistory")||"[]");
-  history.unshift(billData);
-  if(history.length>100){
-    history=history.slice(0,100);
-  }
-  localStorage.setItem("vasanBillHistory",JSON.stringify(history));
-  
-  // autoBackup();
-}
 
+  if (editId) {
+    const existingIndex = history.findIndex(b => b.id == editId);
+    if (existingIndex !== -1) {
+      history[existingIndex].lenar = lenar;
+      history[existingIndex].mobile = mobile;
+      history[existingIndex].denar = denar;
+      history[existingIndex].date = date;
+      history[existingIndex].items = itemsList;
+      history[existingIndex].total = total;
+      history[existingIndex].withAmount = withAmount;
+      // status, paidAmount, timestamp remain the same
+    }
+    localStorage.removeItem("editBillId");
+  } else {
+    const billData={
+      id:Date.now(),
+      lenar:lenar,
+      mobile:mobile,
+      denar:denar,
+      date:date,
+      items:itemsList,
+      total:total,
+      withAmount:withAmount,
+      status:"pending",
+      paidAmount:0,
+      timestamp:new Date().toISOString()
+    };
+    
+    history.unshift(billData);
+    if(history.length>100){
+      history=history.slice(0,100);
+    }
+  }
+  
+  localStorage.setItem("vasanBillHistory",JSON.stringify(history));
+}
 
 function printBill(){
   window.print();
+}
+
+function shareOnWhatsApp() {
+  const lenar = document.getElementById("lenarName").value.trim();
+  const mobile = document.getElementById("lenarMobile").value.trim();
+  
+  if (!mobile || !/^[0-9]{10}$/.test(mobile)) {
+    showAlert("કૃપા કરીને સાચો 10 અંકનો મોબાઇલ નંબર દાખલ કરો");
+    return;
+  }
+  
+  const finalDiv = document.getElementById("finalBillView");
+  const oldStyle = finalDiv.getAttribute("style") || "";
+
+  finalDiv.style.transform = "none";
+  finalDiv.style.zoom = "1";
+  finalDiv.style.width = "520px";
+  finalDiv.style.maxWidth = "520px";
+  finalDiv.style.margin = "0 auto";
+  finalDiv.style.boxShadow = "none";
+  finalDiv.style.border = "2px solid #2b3d52";
+
+  const waWindow = window.open("", "_blank");
+  waWindow.document.write("<div style='font-family:sans-serif;padding:30px;text-align:center;color:#2b3d52;'><h2>WhatsApp ખુલી રહ્યું છે...</h2><p>બિલ તમારા ફોનમાં <b>ડાઉનલોડ</b> થઈ ગયું છે.</p><p>WhatsApp ખુલે એટલે તેને <b>Attach (📎)</b> કરીને મોકલી આપો.</p></div>");
+
+  html2canvas(finalDiv, {
+      scale: 3,
+      backgroundColor: "#ffffff",
+      useCORS: true,
+      scrollY: -window.scrollY
+  }).then(canvas => {
+      finalDiv.setAttribute("style", oldStyle);
+      
+      const link = document.createElement("a");
+      link.download = `Vasan_Bill_${lenar}.png`;
+      link.href = canvas.toDataURL("image/png");
+      link.click();
+      
+      setTimeout(() => {
+        waWindow.location.href = `https://wa.me/91${mobile}`;
+      }, 500);
+
+  }).catch(err => {
+      finalDiv.setAttribute("style", oldStyle);
+      console.error(err);
+      waWindow.close();
+      alert("ઇમેજ બનાવવામાં ભૂલ આવી.");
+  });
 }
 
 function downloadImage() {
@@ -1278,6 +1342,87 @@ function downloadImage() {
         finalDiv.setAttribute("style", oldStyle);
     });
 }
+
+function initEditMode() {
+  const editId = localStorage.getItem("editBillId");
+  if (!editId) return;
+
+  const history = JSON.parse(localStorage.getItem("vasanBillHistory") || "[]");
+  const bill = history.find(b => b.id == editId);
+  
+  if (!bill) {
+    localStorage.removeItem("editBillId");
+    return;
+  }
+
+  document.getElementById("lenarName").value = bill.lenar || "";
+  document.getElementById("lenarMobile").value = bill.mobile || "";
+  document.getElementById("denarName").value = bill.denar || "ઉપલી ફળી મઢ";
+  if (bill.date) {
+    document.getElementById("billDate").value = bill.date;
+  }
+
+  const radioWith = document.querySelector('input[name="mode"][value="with"]');
+  const radioWithout = document.querySelector('input[name="mode"][value="without"]');
+  
+  if (bill.withAmount) {
+    radioWith.checked = true;
+    toggleAmountMode(true);
+  } else {
+    radioWithout.checked = true;
+    toggleAmountMode(false);
+  }
+
+  const totalInput = document.getElementById("totalInput");
+  if (bill.total && bill.withAmount) {
+     totalInput.value = parseFloat((bill.total || "").replace("₹", "")) || "";
+  }
+
+  const tempDiv = document.createElement("div");
+  tempDiv.innerHTML = "<table><tbody>" + (bill.items || "") + "</tbody></table>";
+  const rows = tempDiv.querySelectorAll("tr");
+  const formRows = document.querySelectorAll("#itemTable tbody tr");
+  
+  rows.forEach(r => {
+    const cells = r.querySelectorAll("td");
+    if (cells.length >= 3) {
+      const name = cells[1].textContent.trim();
+      const qty = cells[2].textContent.trim();
+      let amount = "";
+      if (bill.withAmount && cells.length >= 4) {
+         amount = cells[3].textContent.trim().replace("₹", "").trim();
+         if(amount === "-") amount = "";
+      }
+      
+      formRows.forEach(fr => {
+        const rowName = fr.cells[2].textContent.trim();
+        if (rowName === name) {
+          const chk = fr.querySelector('input[type="checkbox"]');
+          if (chk) chk.checked = true;
+          
+          const qtyInput = fr.cells[3].querySelector("input");
+          if (qtyInput) qtyInput.value = qty;
+          
+          if (bill.withAmount) {
+             const amtInput = fr.querySelector(".item-amount");
+             if (amtInput && amount) amtInput.value = amount;
+          }
+        }
+      });
+    }
+  });
+
+  updateSelectedCount();
+  checkItemAmounts();
+
+  const generateBtn = document.querySelector("button[onclick='generateBill()']");
+  if (generateBtn) {
+     generateBtn.innerHTML = "🔄 બિલ અપડેટ કરો (Update)";
+  }
+}
+
+// Call on load
+window.addEventListener('DOMContentLoaded', initEditMode);
 
 </script>
 </body>

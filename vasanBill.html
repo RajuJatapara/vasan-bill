@@ -1,1107 +1,1310 @@
 <!DOCTYPE html>
 <html lang="gu">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#2b3d52">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="વાસણ બિલ">
-<base href="./">
-<title>વાસણ બિલ</title>
-<link rel="icon" href="images/favicon.ico">
-<link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16.png">
-<link rel="icon" type="image/png" sizes="192x192" href="images/favicon-192.png">
-<link rel="icon" type="image/png" sizes="512x512" href="images/favicon-512.png">
-<link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#2b3d52">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="વાસણ બિલ">
+  <base href="./">
+  <title>વાસણ બિલ</title>
+  <link rel="icon" href="images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="images/favicon-192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="images/favicon-512.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
 
-<!-- Prevent stale cache during development (optional) -->
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0">
+  <!-- Prevent stale cache during development (optional) -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
 
-<style>
-*{box-sizing:border-box;margin:0;padding:0;}
-body{
-  font-family:"Poppins",Arial,sans-serif;
-  background:#eef3f7;
-  padding:10px;
-  color:#2b3d52;
-  min-height:100vh;
-}
-.header{
-  background:#2b3d52;
-  color:white;
-  padding:14px 20px;
-  margin:0 0 20px 0;
-  border-radius:8px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:15px;
-}
-h1{
-  text-align:center;
-  flex:1;
-  font-weight:600;
-  margin:0;
-}
-.back-link{
-  color:white;
-  text-decoration:none;
-  background:rgba(255,255,255,0.2);
-  padding:6px 12px;
-  border-radius:6px;
-  font-size:14px;
-  transition:background 0.2s;
-}
-.back-link:hover{
-  background:rgba(255,255,255,0.3);
-}
-.container{
-  max-width:950px;
-  background:white;
-  margin:0 auto 30px;
-  padding:20px;
-  border-radius:12px;
-  box-shadow:0 4px 15px rgba(0,0,0,0.1);
-}
-label{
-  font-weight:600;
-  color:#2b3d52;
-  font-size:14px;
-  display:block;
-  margin-bottom:6px;
-}
-.details{
-  display:flex;
-  justify-content:space-between;
-  flex-wrap:wrap;
-  gap:15px;
-  margin-bottom:20px;
-}
-.details > div{
-  width:48%;
-  min-width:200px;
-}
-.details input{
-  width:100%;
-  padding:8px 10px;
-  border:1px solid #ccc;
-  border-radius:6px;
-  font-size:15px;
-}
-.top-bar{
-  background:#f8f9fa;
-  border:1px solid #dee2e6;
-  border-radius:10px;
-  padding:16px;
-  margin-bottom:18px;
-}
-.top-bar-title{
-  font-size:15px;
-  font-weight:600;
-  color:#2b3d52;
-  margin-bottom:12px;
-}
-.top-bar-content{
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-end;
-  flex-wrap:wrap;
-  gap:12px;
-}
-.top-bar-left{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  flex:1;
-}
-.top-bar-left input{
-  flex:1;
-  min-width:150px;
-}
-.top-bar-right{
-  display:flex;
-  gap:10px;
-}
-input[type="text"],input[type="number"],input[type="date"]{
-  padding:8px 10px;
-  border-radius:6px;
-  border:1px solid #ccc;
-  font-size:15px;
-}
-input[type="number"]:disabled{
-  background:#e9ecef;
-  cursor:not-allowed;
-  opacity:0.7;
-}
-input[type="number"].readonly{
-  background:#f8f9fa;
-  cursor:not-allowed;
-}
-button{
-  background:#2b3d52;
-  color:white;
-  border:none;
-  padding:9px 18px;
-  border-radius:6px;
-  cursor:pointer;
-  font-weight:600;
-  font-size:14px;
-  white-space:nowrap;
-}
-button:hover{
-  background:#1f2f40;
-}
-table{
-  width:100%;
-  border-collapse:collapse;
-  margin-top:15px;
-}
-th,td{
-  border:1px solid #ddd;
-  padding:8px;
-  text-align:center;
-}
-th{
-  background:#2b3d52;
-  color:white;
-  font-weight:600;
-}
-tbody tr:nth-child(even){
-  background:#f8f9fa;
-}
-tbody input[type="number"]{
-  width:80px;
-  text-align:center;
-  border:1px solid #ccc;
-  padding:6px;
-  border-radius:4px;
-}
-tbody input[type="number"]:disabled{
-  background:#e9ecef;
-  cursor:not-allowed;
-}
-tfoot td{
-  font-weight:bold;
-  background:#e7edf3;
-  padding:10px 8px;
-}
-tfoot input[type="number"]{
-  width:120px;
-  text-align:center;
-  border:1px solid #ccc;
-  padding:8px;
-  border-radius:4px;
-  font-weight:600;
-}
-tfoot input[type="number"]:disabled{
-  background:#d1dae3;
-  cursor:not-allowed;
-}
-@media print{.no-print{display:none!important;}}
-.hidden{display:none!important;}
-.radio-group{
-  text-align:center;
-  margin:0 0 20px 0;
-  background:#f1f5fa;
-  padding:12px;
-  border-radius:10px;
-  border:1px solid #d1dae3;
-  display:flex;
-  justify-content:center;
-  gap:30px;
-  flex-wrap:wrap;
-}
-.radio-group label{
-  font-weight:600;
-  font-size:16px;
-  color:#2b3d52;
-  cursor:pointer;
-  display:flex;
-  align-items:center;
-  gap:8px;
-}
-.radio-group input[type="radio"]{
-  accent-color:#2b3d52;
-  transform:scale(1.3);
-  margin-right:6px;
-}
-.generate-btn{
-  background:linear-gradient(135deg,#28a745,#20c997);
-  color:white;
-  padding:10px 24px;
-  font-size:15px;
-}
-.generate-btn:hover{
-  background:linear-gradient(135deg,#218838,#1aa179);
-}
-#printBtn{
-  text-align:center;
-  margin-top:25px;
-  display:flex;
-  justify-content:center;
-  gap:20px;
-  flex-wrap:wrap;
-}
-#printBtn button{
-  font-size:16px;
-  padding:10px 22px;
-  border-radius:6px;
-  transition:0.2s;
-}
-#printPDF{background:#007bff;}
-#printIMG{background:#28a745;}
-#printPDF:hover{background:#0056b3;}
-#printIMG:hover{background:#218838;}
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-/* Bill View Styling */
-#finalBillView{
-  display:none;
-  background:white;
-  border:2px solid #2b3d52;
-  border-radius:12px;
-  padding:10px;
-  max-width:500px;
-  margin:30px auto;
-  box-shadow:0 8px 24px rgba(0,0,0,0.15);
-  font-family:"Poppins",Arial,sans-serif;
-  color:#2b3d52;
-}
-#finalBillView h2{
-  text-align:center;
-  color:#2b3d52;
-  margin:0 0 8px 0;
-  font-size:24px;
-  font-weight:700;
-  border-bottom:2px solid #2b3d52;
-  padding-bottom:10px;
-}
-#finalBillView .subtitle{
-  text-align:center;
-  font-size:12px;
-  color:#666;
-  margin:0 0 20px 0;
-}
-#finalBillView .bill-info{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:12px;
-  margin-bottom:20px;
-  font-size:14px;
-}
-#finalBillView .bill-info > div{
-  padding:10px;
-  background:#f8f9fa;
-  border-radius:6px;
-  border:1px solid #dee2e6;
-}
-#finalBillView .bill-info strong{
-  display:block;
-  color:#495057;
-  font-size:12px;
-  margin-bottom:4px;
-  text-transform:uppercase;
-}
-#finalBillView table{
-  width:100%;
-  border-collapse:collapse;
-  margin:20px 0;
-  border:1px solid #ddd;
-}
-#finalBillView th,#finalBillView td{
-  border:1px solid #ddd;
-  padding:10px 8px;
-  text-align:center;
-  font-size:14px;
-}
-#finalBillView th{
-  background:#2b3d52;
-  color:white;
-  font-weight:600;
-}
-#finalBillView tbody tr:nth-child(even){
-  background:#f8f9fa;
-}
-#finalBillView tfoot td{
-  font-weight:700;
-  background:#e7edf3;
-  text-align:right;
-  padding:12px;
-  font-size:16px;
-}
-#finalBillView .footer{
-  text-align:center;
-  font-size:14px;
-  margin-top:20px;
-  padding-top:15px;
-  border-top:1px dashed #ccc;
-  color:#666;
-}
-.alert{
-  background:#fff3cd;
-  border:1px solid #ffc107;
-  color:#856404;
-  padding:12px 16px;
-  border-radius:8px;
-  margin-bottom:16px;
-  font-size:14px;
-  display:none;
-  position:sticky;
-  top:10px;
-  z-index:1000;
-  box-shadow:0 4px 12px rgba(0,0,0,0.15);
-}
-.alert.show{
-  display:block;
-  animation:slideDown 0.3s ease;
-}
-@keyframes slideDown{
-  from{opacity:0;transform:translateY(-10px);}
-  to{opacity:1;transform:translateY(0);}
-}
-.quick-actions{
-  display:flex;
-  gap:10px;
-  margin-bottom:15px;
-  flex-wrap:wrap;
-}
-.quick-action-btn{
-  background:#f8f9fa;
-  border:1px solid #dee2e6;
-  padding:8px 16px;
-  border-radius:6px;
-  cursor:pointer;
-  font-size:13px;
-  font-weight:600;
-  color:#2b3d52;
-  transition:all 0.2s;
-}
-.quick-action-btn:hover{
-  background:#e9ecef;
-  transform:translateY(-1px);
-  box-shadow:0 2px 8px rgba(0,0,0,0.1);
-}
-.item-count-badge{
-  display:inline-block;
-  background:#28a745;
-  color:white;
-  padding:2px 8px;
-  border-radius:12px;
-  font-size:11px;
-  font-weight:600;
-  margin-left:5px;
-}
-@media (max-width:768px){
-  .container{padding:15px;}
-  h1{font-size:18px;padding:12px 0;}
-  .details > div{width:100%;}
-  .top-bar-content{flex-direction:column;}
-  .top-bar-left{flex-direction:column;}
-  .top-bar-left input{width:100%;}
-  .top-bar-right{width:100%;}
-  .top-bar-right button{flex:1;}
-  button{width:100%;}
-  #printBtn{flex-direction:column;}
-  #printBtn button{width:100%;}
-  #finalBillView{padding:20px;margin:20px 10px;}
-  #finalBillView .bill-info{grid-template-columns:1fr;}
-  .radio-group{gap:20px;}
-  table{font-size:13px;}
-  th,td{padding:6px 4px;}
-}
-/* Mobile Touch Improvements */
-@media (max-width:480px){
-  body{padding:5px;}
-  .container{padding:12px;}
-  table{font-size:12px;}
-  th,td{padding:6px 3px;}
-  tbody input[type="number"]{width:60px;font-size:12px;}
-  tfoot input[type="number"]{width:100px;font-size:12px;}
-  button, .menu-btn, .quick-action-btn{
-    touch-action:manipulation;
-    -webkit-tap-highlight-color:rgba(0,0,0,0.1);
-  }
-  input, select{
-    font-size:16px;
-    touch-action:manipulation;
-  }
-}
-/* Swipe Gesture Support */
-.swipe-hint{
-  display:none;
-  position:fixed;
-  bottom:20px;
-  left:50%;
-  transform:translateX(-50%);
-  background:rgba(0,0,0,0.7);
-  color:white;
-  padding:10px 20px;
-  border-radius:20px;
-  font-size:12px;
-  z-index:1000;
-  animation:slideUp 0.3s ease;
-}
-@keyframes slideUp{
-  from{opacity:0;transform:translateX(-50%) translateY(20px);}
-  to{opacity:1;transform:translateX(-50%) translateY(0);}
-}
-@media (max-width:768px){
-  .swipe-hint{display:block;}
-}
+    body {
+      font-family: "Poppins", Arial, sans-serif;
+      background: #eef3f7;
+      padding: 10px;
+      color: #2b3d52;
+      min-height: 100vh;
+    }
 
-#finalBillView {
-    width: 100% !important;
-    max-width: 100% !important;
-    margin: 0 auto;
-    padding: 10px;
-    border-radius: 12px;
-    overflow: hidden !important;
-    transform: none !important;
-}
+    .header {
+      background: #2b3d52;
+      color: white;
+      padding: 14px 20px;
+      margin: 0 0 20px 0;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+    }
 
-/* Auto scale for small screens */
-@media (max-width:768px){
-  #finalBillView {
-    zoom: 0.90;
-  }
-}
+    h1 {
+      text-align: center;
+      flex: 1;
+      font-weight: 600;
+      margin: 0;
+    }
 
-@media (max-width:480px){
-  #finalBillView {
-    zoom: 0.82;
-  }
-}
+    .back-link {
+      color: white;
+      text-decoration: none;
+      background: rgba(255, 255, 255, 0.2);
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 14px;
+      transition: background 0.2s;
+    }
 
-@media (max-width:360px){
-  #finalBillView {
-    zoom: 0.74;
-  }
-}
+    .back-link:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    .container {
+      max-width: 950px;
+      background: white;
+      margin: 0 auto 30px;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+      font-weight: 600;
+      color: #2b3d52;
+      font-size: 14px;
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .details {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .details>div {
+      width: 48%;
+      min-width: 200px;
+    }
+
+    .details input {
+      width: 100%;
+      padding: 8px 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 15px;
+    }
+
+    .top-bar {
+      background: #f8f9fa;
+      border: 1px solid #dee2e6;
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 18px;
+    }
+
+    .top-bar-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: #2b3d52;
+      margin-bottom: 12px;
+    }
+
+    .top-bar-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .top-bar-left {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      flex: 1;
+    }
+
+    .top-bar-left input {
+      flex: 1;
+      min-width: 150px;
+    }
+
+    .top-bar-right {
+      display: flex;
+      gap: 10px;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    input[type="date"] {
+      padding: 8px 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 15px;
+    }
+
+    input[type="number"]:disabled {
+      background: #e9ecef;
+      cursor: not-allowed;
+      opacity: 0.7;
+    }
+
+    input[type="number"].readonly {
+      background: #f8f9fa;
+      cursor: not-allowed;
+    }
+
+    button {
+      background: #2b3d52;
+      color: white;
+      border: none;
+      padding: 9px 18px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    button:hover {
+      background: #1f2f40;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+
+    th,
+    td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: center;
+    }
+
+    th {
+      background: #2b3d52;
+      color: white;
+      font-weight: 600;
+    }
+
+    tbody tr:nth-child(even) {
+      background: #f8f9fa;
+    }
+
+    tbody input[type="number"] {
+      width: 80px;
+      text-align: center;
+      border: 1px solid #ccc;
+      padding: 6px;
+      border-radius: 4px;
+    }
+
+    tbody input[type="number"]:disabled {
+      background: #e9ecef;
+      cursor: not-allowed;
+    }
+
+    tfoot td {
+      font-weight: bold;
+      background: #e7edf3;
+      padding: 10px 8px;
+    }
+
+    tfoot input[type="number"] {
+      width: 120px;
+      text-align: center;
+      border: 1px solid #ccc;
+      padding: 8px;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+
+    tfoot input[type="number"]:disabled {
+      background: #d1dae3;
+      cursor: not-allowed;
+    }
+
+    @media print {
+      .no-print {
+        display: none !important;
+      }
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .radio-group {
+      text-align: center;
+      margin: 0 0 20px 0;
+      background: #f1f5fa;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid #d1dae3;
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      flex-wrap: wrap;
+    }
+
+    .radio-group label {
+      font-weight: 600;
+      font-size: 16px;
+      color: #2b3d52;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .radio-group input[type="radio"] {
+      accent-color: #2b3d52;
+      transform: scale(1.3);
+      margin-right: 6px;
+    }
+
+    .generate-btn {
+      background: linear-gradient(135deg, #28a745, #20c997);
+      color: white;
+      padding: 10px 24px;
+      font-size: 15px;
+    }
+
+    .generate-btn:hover {
+      background: linear-gradient(135deg, #218838, #1aa179);
+    }
+
+    #printBtn {
+      text-align: center;
+      margin-top: 25px;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    #printBtn button {
+      font-size: 16px;
+      padding: 10px 22px;
+      border-radius: 6px;
+      transition: 0.2s;
+    }
+
+    #printPDF {
+      background: #007bff;
+    }
+
+    #printIMG {
+      background: #28a745;
+    }
+
+    #printPDF:hover {
+      background: #0056b3;
+    }
+
+    #printIMG:hover {
+      background: #218838;
+    }
+
+    /* Bill View Styling */
+    #finalBillView {
+      display: none;
+      background: white;
+      border: 2px solid #2b3d52;
+      border-radius: 12px;
+      padding: 10px;
+      max-width: 500px;
+      margin: 30px auto;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+      font-family: "Poppins", Arial, sans-serif;
+      color: #2b3d52;
+    }
+
+    #finalBillView h2 {
+      text-align: center;
+      color: #2b3d52;
+      margin: 0 0 8px 0;
+      font-size: 24px;
+      font-weight: 700;
+      border-bottom: 2px solid #2b3d52;
+      padding-bottom: 10px;
+    }
+
+    #finalBillView .subtitle {
+      text-align: center;
+      font-size: 12px;
+      color: #666;
+      margin: 0 0 20px 0;
+    }
+
+    #finalBillView .bill-info {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 20px;
+      font-size: 14px;
+    }
+
+    #finalBillView .bill-info>div {
+      padding: 10px;
+      background: #f8f9fa;
+      border-radius: 6px;
+      border: 1px solid #dee2e6;
+    }
+
+    #finalBillView .bill-info strong {
+      display: block;
+      color: #495057;
+      font-size: 12px;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+    }
+
+    #finalBillView table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      border: 1px solid #ddd;
+    }
+
+    #finalBillView th,
+    #finalBillView td {
+      border: 1px solid #ddd;
+      padding: 10px 8px;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    #finalBillView th {
+      background: #2b3d52;
+      color: white;
+      font-weight: 600;
+    }
+
+    #finalBillView tbody tr:nth-child(even) {
+      background: #f8f9fa;
+    }
+
+    #finalBillView tfoot td {
+      font-weight: 700;
+      background: #e7edf3;
+      text-align: right;
+      padding: 12px;
+      font-size: 16px;
+    }
+
+    #finalBillView .footer {
+      text-align: center;
+      font-size: 14px;
+      margin-top: 20px;
+      padding-top: 15px;
+      border-top: 1px dashed #ccc;
+      color: #666;
+    }
+
+    .alert {
+      background: #fff3cd;
+      border: 1px solid #ffc107;
+      color: #856404;
+      padding: 12px 16px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      font-size: 14px;
+      display: none;
+      position: sticky;
+      top: 10px;
+      z-index: 1000;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .alert.show {
+      display: block;
+      animation: slideDown 0.3s ease;
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .quick-actions {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
+    }
+
+    .quick-action-btn {
+      background: #f8f9fa;
+      border: 1px solid #dee2e6;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      color: #2b3d52;
+      transition: all 0.2s;
+    }
+
+    .quick-action-btn:hover {
+      background: #e9ecef;
+      transform: translateY(-1px);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .item-count-badge {
+      display: inline-block;
+      background: #28a745;
+      color: white;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 600;
+      margin-left: 5px;
+    }
+
+    @media (max-width:768px) {
+      .container {
+        padding: 15px;
+      }
+
+      h1 {
+        font-size: 18px;
+        padding: 12px 0;
+      }
+
+      .details>div {
+        width: 100%;
+      }
+
+      .top-bar-content {
+        flex-direction: column;
+      }
+
+      .top-bar-left {
+        flex-direction: column;
+      }
+
+      .top-bar-left input {
+        width: 100%;
+      }
+
+      .top-bar-right {
+        width: 100%;
+      }
+
+      .top-bar-right button {
+        flex: 1;
+      }
+
+      button {
+        width: 100%;
+      }
+
+      #printBtn {
+        flex-direction: column;
+      }
+
+      #printBtn button {
+        width: 100%;
+      }
+
+      #finalBillView {
+        padding: 20px;
+        margin: 20px 10px;
+      }
+
+      #finalBillView .bill-info {
+        grid-template-columns: 1fr;
+      }
+
+      .radio-group {
+        gap: 20px;
+      }
+
+      table {
+        font-size: 13px;
+      }
+
+      th,
+      td {
+        padding: 6px 4px;
+      }
+    }
+
+    /* Mobile Touch Improvements */
+    @media (max-width:480px) {
+      body {
+        padding: 5px;
+      }
+
+      .container {
+        padding: 12px;
+      }
+
+      table {
+        font-size: 12px;
+      }
+
+      th,
+      td {
+        padding: 6px 3px;
+      }
+
+      tbody input[type="number"] {
+        width: 60px;
+        font-size: 12px;
+      }
+
+      tfoot input[type="number"] {
+        width: 100px;
+        font-size: 12px;
+      }
+
+      button,
+      .menu-btn,
+      .quick-action-btn {
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+      }
+
+      input,
+      select {
+        font-size: 16px;
+        touch-action: manipulation;
+      }
+    }
+
+    /* Swipe Gesture Support */
+    .swipe-hint {
+      display: none;
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.7);
+      color: white;
+      padding: 10px 20px;
+      border-radius: 20px;
+      font-size: 12px;
+      z-index: 1000;
+      animation: slideUp 0.3s ease;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
+    }
+
+    @media (max-width:768px) {
+      .swipe-hint {
+        display: block;
+      }
+    }
+
+    #finalBillView {
+      width: 100% !important;
+      max-width: 100% !important;
+      margin: 0 auto;
+      padding: 10px;
+      border-radius: 12px;
+      overflow: hidden !important;
+      transform: none !important;
+    }
+
+    /* Auto scale for small screens */
+    @media (max-width:768px) {
+      #finalBillView {
+        zoom: 0.90;
+      }
+    }
+
+    @media (max-width:480px) {
+      #finalBillView {
+        zoom: 0.82;
+      }
+    }
+
+    @media (max-width:360px) {
+      #finalBillView {
+        zoom: 0.74;
+      }
+    }
 
 
-/* PRINT FIX – COLOR EXACT */
-* {
-  -webkit-print-color-adjust: exact !important;
-  print-color-adjust: exact !important;
-}
+    /* PRINT FIX – COLOR EXACT */
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
 
-/* PRINT PERFECT – REPLACE OLD PRINT CSS COMPLETELY */
-@media print {
+    /* PRINT PERFECT – REPLACE OLD PRINT CSS COMPLETELY */
+    @media print {
 
-/* Hide all unwanted UI */
-.no-print, .container, .header, #printBtn, .radio-group {
-  display: none !important;
-}
+      /* Hide all unwanted UI */
+      .no-print,
+      .container,
+      .header,
+      #printBtn,
+      .radio-group {
+        display: none !important;
+      }
 
-html, body {
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  background: #fff !important;
-}
+      html,
+      body {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        background: #fff !important;
+      }
 
-#finalBillView {
-  display: block !important;
-  width: 100% !important;
-  max-width: 520px !important;
-  margin: 0 auto !important;
-  border: none !important;
-  padding: 0 10px !important;
+      #finalBillView {
+        display: block !important;
+        width: 100% !important;
+        max-width: 520px !important;
+        margin: 0 auto !important;
+        border: none !important;
+        padding: 0 10px !important;
 
-  /* POSITION RESET */
-  position: relative !important;
-  top: 0 !important;
-  left: 0 !important;
-  transform: none !important;
-  overflow: visible !important;
+        /* POSITION RESET */
+        position: relative !important;
+        top: 0 !important;
+        left: 0 !important;
+        transform: none !important;
+        overflow: visible !important;
 
-  /* NO ZOOM / SCALE */
-  zoom: none !important;
-  scale: none !important;
-}
+        /* NO ZOOM / SCALE */
+        zoom: none !important;
+        scale: none !important;
+      }
 
-#finalBillView table {
-  page-break-inside: avoid !important;
-}
+      #finalBillView table {
+        page-break-inside: avoid !important;
+      }
 
-.bill-info,
-.footer,
-tr {
-  page-break-inside: avoid !important;
-  break-inside: avoid !important;
-}
+      .bill-info,
+      .footer,
+      tr {
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
 
-@page {
-  size: A4;
-  margin: 10mm;
-}
-}
-
-
-</style>
+      @page {
+        size: A4;
+        margin: 10mm;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-<div class="header">
-  <!-- <a href="index.html" class="back-link">← પાછળ</a> -->
-  <h1>🍽️ ઉપલી ફળી મઢ વાસણ બિલ</h1>
-  <div style="width:70px;"></div>
-</div>
-
-<div class="container no-print" id="formArea">
-  <div class="alert" id="alertMsg"></div>
-  
-  <div class="radio-group">
-    <label>
-      <input type="radio" name="mode" value="with" checked onchange="toggleAmountMode(true)">
-      રકમ સાથે
-    </label>
-    <label>
-      <input type="radio" name="mode" value="without" onchange="toggleAmountMode(false)">
-      રકમ વગર
-    </label>
+  <div class="header">
+    <!-- <a href="index.html" class="back-link">← પાછળ</a> -->
+    <h1>🍽️ ઉપલી ફળી મઢ વાસણ બિલ</h1>
+    <div style="width:70px;"></div>
   </div>
 
-  <div class="details">
-    <div>
-      <label>લેનાર</label>
-      <input type="text" id="lenarName" placeholder="લેનારનું નામ" required maxlength="35">
-    </div>
-    <div>
-      <label>લેનાર મોબાઇલ નંબર</label>
-      <input type="text" id="lenarMobile" placeholder="મોબાઇલ નંબર" maxlength="10"
-             onkeypress="return /[0-9]/.test(event.key)"
-             oninput="this.value=this.value.replace(/[^0-9]/g,'')" required>
-    </div>
-    <div>
-      <label>દેનાર</label>
-      <input type="text" id="denarName" value="વલકુ ભાઈ" maxlength="30">
-    </div>
-    <div>
-      <label>તારીખ</label>
-      <input type="date" id="billDate">
-    </div>
-  </div>
+  <div class="container no-print" id="formArea">
+    <div class="alert" id="alertMsg"></div>
 
-  <div class="quick-actions">
-    <button class="quick-action-btn" onclick="selectAllItems()">✅ બધું પસંદ કરો</button>
-    <button class="quick-action-btn" onclick="clearAllItems()">❌ બધું સાફ કરો</button>
-    <button class="quick-action-btn" onclick="resetForm()">🔄 રીસેટ</button>
-  </div>
-  
-  <div class="top-bar">
-    <div class="top-bar-title">નવી વસ્તુ ઉમેરો 
-      <!-- <span style="margin-left:100px;" class="item-count-badge" id="">0 પસંદ</span> -->
+    <div class="radio-group">
+      <label>
+        <input type="radio" name="mode" value="with" checked onchange="toggleAmountMode(true)">
+        રકમ સાથે
+      </label>
+      <label>
+        <input type="radio" name="mode" value="without" onchange="toggleAmountMode(false)">
+        રકમ વગર
+      </label>
     </div>
-    <div class="top-bar-content">
-      <div class="top-bar-left">
-        <input type="text" id="newItemName" placeholder="વસ્તુનું નામ">
-        <input type="number" id="newItemAmount" placeholder="રકમ" min="0" value="0">
+
+    <div class="details">
+      <div>
+        <label>લેનાર</label>
+        <input type="text" id="lenarName" placeholder="લેનારનું નામ" required maxlength="35">
       </div>
-      <div class="top-bar-right">
-        <button onclick="addNewItem()">+ વસ્તુ ઉમેરો</button>
-        <button class="generate-btn" onclick="generateBill()">✅ બિલ બનાવો</button>
+      <div>
+        <label>લેનાર મોબાઇલ નંબર</label>
+        <input type="text" id="lenarMobile" placeholder="મોબાઇલ નંબર" maxlength="10"
+          onkeypress="return /[0-9]/.test(event.key)" oninput="this.value=this.value.replace(/[^0-9]/g,'')" required>
+      </div>
+      <div>
+        <label>દેનાર</label>
+        <input type="text" id="denarName" value="વલકુ ભાઈ" maxlength="30">
+      </div>
+      <div>
+        <label>તારીખ</label>
+        <input type="date" id="billDate">
       </div>
     </div>
+
+    <div class="quick-actions">
+      <button class="quick-action-btn" onclick="selectAllItems()">✅ બધું પસંદ કરો</button>
+      <button class="quick-action-btn" onclick="clearAllItems()">❌ બધું સાફ કરો</button>
+      <button class="quick-action-btn" onclick="resetForm()">🔄 રીસેટ</button>
+    </div>
+
+    <div class="top-bar">
+      <div class="top-bar-title">નવી વસ્તુ ઉમેરો
+        <!-- <span style="margin-left:100px;" class="item-count-badge" id="">0 પસંદ</span> -->
+      </div>
+      <div class="top-bar-content">
+        <div class="top-bar-left">
+          <input type="text" id="newItemName" placeholder="વસ્તુનું નામ">
+          <input type="number" id="newItemAmount" placeholder="રકમ" min="0" value="0">
+        </div>
+        <div class="top-bar-right">
+          <button onclick="addNewItem()">+ વસ્તુ ઉમેરો</button>
+          <button class="generate-btn" onclick="generateBill()">✅ બિલ બનાવો</button>
+        </div>
+      </div>
+    </div>
+
+    <table id="itemTable">
+      <thead>
+        <tr>
+          <th style="width:50px;">ક્રમ</th>
+          <th>પસંદ કરો</th>
+          <th>વસ્તુ</th>
+          <th>સંખ્યા</th>
+          <th class="amount-col">રકમ</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="text-align:center;font-weight:600;">1</td>
+          <td><input type="checkbox" onchange="checkItemAmounts();updateSelectedCount();"></td>
+          <td>થાળી</td>
+          <td><input type="number" min="1" value="1"></td>
+          <td class="amount-col"><input type="number" min="0" value="0" class="item-amount"
+              onchange="checkItemAmounts()" oninput="checkItemAmounts()"></td>
+        </tr>
+        <tr>
+          <td style="text-align:center;font-weight:600;">2</td>
+          <td><input type="checkbox" onchange="checkItemAmounts();updateSelectedCount();"></td>
+          <td>વાટકા</td>
+          <td><input type="number" min="1" value="1"></td>
+          <td class="amount-col"><input type="number" min="0" value="0" class="item-amount"
+              onchange="checkItemAmounts()" oninput="checkItemAmounts()"></td>
+        </tr>
+        <tr>
+          <td style="text-align:center;font-weight:600;">3</td>
+          <td><input type="checkbox" onchange="checkItemAmounts();updateSelectedCount();"></td>
+          <td>મોટુ તપેલુ</td>
+          <td><input type="number" min="1" value="1"></td>
+          <td class="amount-col"><input type="number" min="0" value="0" class="item-amount"
+              onchange="checkItemAmounts()" oninput="checkItemAmounts()"></td>
+        </tr>
+        <tr>
+          <td style="text-align:center;font-weight:600;">4</td>
+          <td><input type="checkbox" onchange="checkItemAmounts();updateSelectedCount();"></td>
+          <td>નાનું તપેલુ</td>
+          <td><input type="number" min="1" value="1"></td>
+          <td class="amount-col"><input type="number" min="0" value="0" class="item-amount"
+              onchange="checkItemAmounts()" oninput="checkItemAmounts()"></td>
+        </tr>
+        <tr>
+          <td style="text-align:center;font-weight:600;">5</td>
+          <td><input type="checkbox" onchange="checkItemAmounts();updateSelectedCount();"></td>
+          <td>સીબા</td>
+          <td><input type="number" min="1" value="1"></td>
+          <td class="amount-col"><input type="number" min="0" value="0" class="item-amount"
+              onchange="checkItemAmounts()" oninput="checkItemAmounts()"></td>
+        </tr>
+        <tr>
+          <td style="text-align:center;font-weight:600;">6</td>
+          <td><input type="checkbox" onchange="checkItemAmounts();updateSelectedCount();"></td>
+          <td>ડોલું</td>
+          <td><input type="number" min="1" value="1"></td>
+          <td class="amount-col"><input type="number" min="0" value="0" class="item-amount"
+              onchange="checkItemAmounts()" oninput="checkItemAmounts()"></td>
+        </tr>
+        <tr>
+          <td style="text-align:center;font-weight:600;">7</td>
+          <td><input type="checkbox" onchange="checkItemAmounts();updateSelectedCount();"></td>
+          <td>ગ્લાસ</td>
+          <td><input type="number" min="1" value="1"></td>
+          <td class="amount-col"><input type="number" min="0" value="0" class="item-amount"
+              onchange="checkItemAmounts()" oninput="checkItemAmounts()"></td>
+        </tr>
+        <tr>
+          <td style="text-align:center;font-weight:600;">8</td>
+          <td><input type="checkbox" onchange="checkItemAmounts();updateSelectedCount();"></td>
+          <td>કિટલા</td>
+          <td><input type="number" min="1" value="1"></td>
+          <td class="amount-col"><input type="number" min="0" value="0" class="item-amount"
+              onchange="checkItemAmounts()" oninput="checkItemAmounts()"></td>
+        </tr>
+        <tr>
+          <td style="text-align:center;font-weight:600;">9</td>
+          <td><input type="checkbox" onchange="checkItemAmounts();updateSelectedCount();"></td>
+          <td>તાવિથા</td>
+          <td><input type="number" min="1" value="1"></td>
+          <td class="amount-col"><input type="number" min="0" value="0" class="item-amount"
+              onchange="checkItemAmounts()" oninput="checkItemAmounts()"></td>
+        </tr>
+        <tr>
+          <td style="text-align:center;font-weight:600;">10</td>
+          <td><input type="checkbox" onchange="checkItemAmounts();updateSelectedCount();"></td>
+          <td>ડોયા</td>
+          <td><input type="number" min="1" value="1"></td>
+          <td class="amount-col"><input type="number" min="0" value="0" class="item-amount"
+              onchange="checkItemAmounts()" oninput="checkItemAmounts()"></td>
+        </tr>
+        <tr>
+          <td style="text-align:center;font-weight:600;">11</td>
+          <td><input type="checkbox" onchange="checkItemAmounts();updateSelectedCount();"></td>
+          <td>સમસા</td>
+          <td><input type="number" min="1" value="1"></td>
+          <td class="amount-col"><input type="number" min="0" value="0" class="item-amount"
+              onchange="checkItemAmounts()" oninput="checkItemAmounts()"></td>
+        </tr>
+        <tr>
+          <td style="text-align:center;font-weight:600;">12</td>
+          <td><input type="checkbox" onchange="checkItemAmounts();updateSelectedCount();"></td>
+          <td>જારો</td>
+          <td><input type="number" min="1" value="1"></td>
+          <td class="amount-col"><input type="number" min="0" value="0" class="item-amount"
+              onchange="checkItemAmounts()" oninput="checkItemAmounts()"></td>
+        </tr>
+        <tr>
+          <td style="text-align:center;font-weight:600;">13</td>
+          <td><input type="checkbox" onchange="checkItemAmounts();updateSelectedCount();"></td>
+          <td>ભાતિયું</td>
+          <td><input type="number" min="1" value="1"></td>
+          <td class="amount-col"><input type="number" min="0" value="0" class="item-amount"
+              onchange="checkItemAmounts()" oninput="checkItemAmounts()"></td>
+        </tr>
+        <tr>
+          <td style="text-align:center;font-weight:600;">14</td>
+          <td><input type="checkbox" onchange="checkItemAmounts();updateSelectedCount();"></td>
+          <td>ખુંમસા</td>
+          <td><input type="number" min="1" value="1"></td>
+          <td class="amount-col"><input type="number" min="0" value="0" class="item-amount"
+              onchange="checkItemAmounts()" oninput="checkItemAmounts()"></td>
+        </tr>
+        <tr>
+          <td style="text-align:center;font-weight:600;">15</td>
+          <td><input type="checkbox" onchange="checkItemAmounts();updateSelectedCount();"></td>
+          <td>બકડિયું</td>
+          <td><input type="number" min="1" value="1"></td>
+          <td class="amount-col"><input type="number" min="0" value="0" class="item-amount"
+              onchange="checkItemAmounts()" oninput="checkItemAmounts()"></td>
+        </tr>
+        <tr>
+          <td style="text-align:center;font-weight:600;">16</td>
+          <td><input type="checkbox" onchange="checkItemAmounts();updateSelectedCount();"></td>
+          <td>સોકી</td>
+          <td><input type="number" min="1" value="1"></td>
+          <td class="amount-col"><input type="number" min="0" value="0" class="item-amount"
+              onchange="checkItemAmounts()" oninput="checkItemAmounts()"></td>
+        </tr>
+        <tr>
+          <td style="text-align:center;font-weight:600;">17</td>
+          <td><input type="checkbox" onchange="checkItemAmounts();updateSelectedCount();"></td>
+          <td>સાકું</td>
+          <td><input type="number" min="1" value="1"></td>
+          <td class="amount-col"><input type="number" min="0" value="0" class="item-amount"
+              onchange="checkItemAmounts()" oninput="checkItemAmounts()"></td>
+        </tr>
+        <tr>
+          <td style="text-align:center;font-weight:600;">18</td>
+          <td><input type="checkbox" onchange="checkItemAmounts();updateSelectedCount();"></td>
+          <td>મશીન</td>
+          <td><input type="number" min="1" value="1"></td>
+          <td class="amount-col"><input type="number" min="0" value="0" class="item-amount"
+              onchange="checkItemAmounts()" oninput="checkItemAmounts()"></td>
+        </tr>
+        <tr>
+          <td style="text-align:center;font-weight:600;">19</td>
+          <td><input type="checkbox" onchange="checkItemAmounts();updateSelectedCount();"></td>
+          <td>ચુલો</td>
+          <td><input type="number" min="1" value="1"></td>
+          <td class="amount-col"><input type="number" min="0" value="0" class="item-amount"
+              onchange="checkItemAmounts()" oninput="checkItemAmounts()"></td>
+        </tr>
+      </tbody>
+      <tfoot class="amount-col">
+        <tr>
+          <td colspan="4"><strong>કુલ રકમ</strong></td>
+          <td><input type="number" id="totalInput" placeholder="કુલ દાખલ કરો" min="0" onchange="checkTotalAmount()">
+          </td>
+        </tr>
+      </tfoot>
+    </table>
   </div>
 
-  <table id="itemTable">
-    <thead>
-      <tr>
-        <th style="width:50px;">ક્રમ</th>
-        <th>પસંદ કરો</th>
-        <th>વસ્તુ</th>
-        <th>સંખ્યા</th>
-        <th class="amount-col">રકમ</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td style="text-align:center;font-weight:600;">1</td>
-        <td><input type="checkbox" onchange="checkItemAmounts();updateSelectedCount();"></td>
-        <td>થાળી</td>
-        <td><input type="number" min="1" value="1"></td>
-        <td class="amount-col"><input type="number" min="0" value="0" class="item-amount" onchange="checkItemAmounts()" oninput="checkItemAmounts()"></td>
-      </tr>
-      <tr>
-        <td style="text-align:center;font-weight:600;">2</td>
-        <td><input type="checkbox" onchange="checkItemAmounts();updateSelectedCount();"></td>
-        <td>વાટકા</td>
-        <td><input type="number" min="1" value="1"></td>
-        <td class="amount-col"><input type="number" min="0" value="0" class="item-amount" onchange="checkItemAmounts()" oninput="checkItemAmounts()"></td>
-      </tr>
-      <tr>
-        <td style="text-align:center;font-weight:600;">3</td>
-        <td><input type="checkbox" onchange="checkItemAmounts();updateSelectedCount();"></td>
-        <td>મોટુ તપેલુ</td>
-        <td><input type="number" min="1" value="1"></td>
-        <td class="amount-col"><input type="number" min="0" value="0" class="item-amount" onchange="checkItemAmounts()" oninput="checkItemAmounts()"></td>
-      </tr>
-      <tr>
-        <td style="text-align:center;font-weight:600;">4</td>
-        <td><input type="checkbox" onchange="checkItemAmounts();updateSelectedCount();"></td>
-        <td>નાનું તપેલુ</td>
-        <td><input type="number" min="1" value="1"></td>
-        <td class="amount-col"><input type="number" min="0" value="0" class="item-amount" onchange="checkItemAmounts()" oninput="checkItemAmounts()"></td>
-      </tr>
-      <tr>
-        <td style="text-align:center;font-weight:600;">5</td>
-        <td><input type="checkbox" onchange="checkItemAmounts();updateSelectedCount();"></td>
-        <td>સીબા</td>
-        <td><input type="number" min="1" value="1"></td>
-        <td class="amount-col"><input type="number" min="0" value="0" class="item-amount" onchange="checkItemAmounts()" oninput="checkItemAmounts()"></td>
-      </tr>
-      <tr>
-        <td style="text-align:center;font-weight:600;">6</td>
-        <td><input type="checkbox" onchange="checkItemAmounts();updateSelectedCount();"></td>
-        <td>ડોલું</td>
-        <td><input type="number" min="1" value="1"></td>
-        <td class="amount-col"><input type="number" min="0" value="0" class="item-amount" onchange="checkItemAmounts()" oninput="checkItemAmounts()"></td>
-      </tr>
-      <tr>
-        <td style="text-align:center;font-weight:600;">7</td>
-        <td><input type="checkbox" onchange="checkItemAmounts();updateSelectedCount();"></td>
-        <td>ગ્લાસ</td>
-        <td><input type="number" min="1" value="1"></td>
-        <td class="amount-col"><input type="number" min="0" value="0" class="item-amount" onchange="checkItemAmounts()" oninput="checkItemAmounts()"></td>
-      </tr>
-      <tr>
-        <td style="text-align:center;font-weight:600;">8</td>
-        <td><input type="checkbox" onchange="checkItemAmounts();updateSelectedCount();"></td>
-        <td>કિટલા</td>
-        <td><input type="number" min="1" value="1"></td>
-        <td class="amount-col"><input type="number" min="0" value="0" class="item-amount" onchange="checkItemAmounts()" oninput="checkItemAmounts()"></td>
-      </tr>
-      <tr>
-        <td style="text-align:center;font-weight:600;">9</td>
-        <td><input type="checkbox" onchange="checkItemAmounts();updateSelectedCount();"></td>
-        <td>તાવિથા</td>
-        <td><input type="number" min="1" value="1"></td>
-        <td class="amount-col"><input type="number" min="0" value="0" class="item-amount" onchange="checkItemAmounts()" oninput="checkItemAmounts()"></td>
-      </tr>
-      <tr>
-        <td style="text-align:center;font-weight:600;">10</td>
-        <td><input type="checkbox" onchange="checkItemAmounts();updateSelectedCount();"></td>
-        <td>ડોયા</td>
-        <td><input type="number" min="1" value="1"></td>
-        <td class="amount-col"><input type="number" min="0" value="0" class="item-amount" onchange="checkItemAmounts()" oninput="checkItemAmounts()"></td>
-      </tr>
-      <tr>
-        <td style="text-align:center;font-weight:600;">11</td>
-        <td><input type="checkbox" onchange="checkItemAmounts();updateSelectedCount();"></td>
-        <td>સમસા</td>
-        <td><input type="number" min="1" value="1"></td>
-        <td class="amount-col"><input type="number" min="0" value="0" class="item-amount" onchange="checkItemAmounts()" oninput="checkItemAmounts()"></td>
-      </tr>
-      <tr>
-        <td style="text-align:center;font-weight:600;">12</td>
-        <td><input type="checkbox" onchange="checkItemAmounts();updateSelectedCount();"></td>
-        <td>જારો</td>
-        <td><input type="number" min="1" value="1"></td>
-        <td class="amount-col"><input type="number" min="0" value="0" class="item-amount" onchange="checkItemAmounts()" oninput="checkItemAmounts()"></td>
-      </tr>
-      <tr>
-        <td style="text-align:center;font-weight:600;">13</td>
-        <td><input type="checkbox" onchange="checkItemAmounts();updateSelectedCount();"></td>
-        <td>ભાતિયું</td>
-        <td><input type="number" min="1" value="1"></td>
-        <td class="amount-col"><input type="number" min="0" value="0" class="item-amount" onchange="checkItemAmounts()" oninput="checkItemAmounts()"></td>
-      </tr>
-      <tr>
-        <td style="text-align:center;font-weight:600;">14</td>
-        <td><input type="checkbox" onchange="checkItemAmounts();updateSelectedCount();"></td>
-        <td>ખુંમસા</td>
-        <td><input type="number" min="1" value="1"></td>
-        <td class="amount-col"><input type="number" min="0" value="0" class="item-amount" onchange="checkItemAmounts()" oninput="checkItemAmounts()"></td>
-      </tr>
-      <tr>
-        <td style="text-align:center;font-weight:600;">15</td>
-        <td><input type="checkbox" onchange="checkItemAmounts();updateSelectedCount();"></td>
-        <td>બકડિયું</td>
-        <td><input type="number" min="1" value="1"></td>
-        <td class="amount-col"><input type="number" min="0" value="0" class="item-amount" onchange="checkItemAmounts()" oninput="checkItemAmounts()"></td>
-      </tr>
-      <tr>
-        <td style="text-align:center;font-weight:600;">16</td>
-        <td><input type="checkbox" onchange="checkItemAmounts();updateSelectedCount();"></td>
-        <td>સોકી</td>
-        <td><input type="number" min="1" value="1"></td>
-        <td class="amount-col"><input type="number" min="0" value="0" class="item-amount" onchange="checkItemAmounts()" oninput="checkItemAmounts()"></td>
-      </tr>
-      <tr>
-        <td style="text-align:center;font-weight:600;">17</td>
-        <td><input type="checkbox" onchange="checkItemAmounts();updateSelectedCount();"></td>
-        <td>સાકું</td>
-        <td><input type="number" min="1" value="1"></td>
-        <td class="amount-col"><input type="number" min="0" value="0" class="item-amount" onchange="checkItemAmounts()" oninput="checkItemAmounts()"></td>
-      </tr>
-      <tr>
-        <td style="text-align:center;font-weight:600;">18</td>
-        <td><input type="checkbox" onchange="checkItemAmounts();updateSelectedCount();"></td>
-        <td>મશીન</td>
-        <td><input type="number" min="1" value="1"></td>
-        <td class="amount-col"><input type="number" min="0" value="0" class="item-amount" onchange="checkItemAmounts()" oninput="checkItemAmounts()"></td>
-      </tr>
-      <tr>
-        <td style="text-align:center;font-weight:600;">19</td>
-        <td><input type="checkbox" onchange="checkItemAmounts();updateSelectedCount();"></td>
-        <td>ચુલો</td>
-        <td><input type="number" min="1" value="1"></td>
-        <td class="amount-col"><input type="number" min="0" value="0" class="item-amount" onchange="checkItemAmounts()" oninput="checkItemAmounts()"></td>
-      </tr>
-    </tbody>
-    <tfoot class="amount-col">
-      <tr>
-        <td colspan="4"><strong>કુલ રકમ</strong></td>
-        <td><input type="number" id="totalInput" placeholder="કુલ દાખલ કરો" min="0" onchange="checkTotalAmount()"></td>
-      </tr>
-    </tfoot>
-  </table>
-</div>
+  <div id="finalBillView" style="width:520px;max-width:520px;margin:0 auto;"></div>
 
-<div id="finalBillView"  style="width:520px;max-width:520px;margin:0 auto;"></div>
+  <div id="printBtn" class="no-print" style="display:none;">
+    <button id="printPDF" onclick="printBill()">🖨️ પ્રિન્ટ / PDF</button>
+    <button id="printIMG" onclick="downloadImage()">🖼️ ઇમેજ ડાઉનલોડ કરો</button>
+  </div>
 
-<div id="printBtn" class="no-print" style="display:none;">
-  <button id="printPDF" onclick="printBill()">🖨️ પ્રિન્ટ / PDF</button>
-  <button id="printIMG" onclick="downloadImage()">🖼️ ઇમેજ ડાઉનલોડ કરો</button>
-</div>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script>
+    document.getElementById("billDate").valueAsDate = new Date();
+    let withAmount = true;
+    updateSelectedCount();
+    updateRowNumbers();
 
-<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-<script>
-  document.getElementById("billDate").valueAsDate = new Date();
-  let withAmount = true;
-  updateSelectedCount();
-  updateRowNumbers();
-  
-  // ---------------- Swipe Variables ----------------
-  let touchStartX = 0;
-  let touchStartY = 0;
-  let touchEndX = 0;
-  let touchEndY = 0;
-  
-  // ---------------- Touch Start ----------------
-  document.addEventListener("touchstart", function(e) {
+    // ---------------- Swipe Variables ----------------
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let touchEndX = 0;
+    let touchEndY = 0;
+
+    // ---------------- Touch Start ----------------
+    document.addEventListener("touchstart", function (e) {
       touchStartX = e.changedTouches[0].screenX;
       touchStartY = e.changedTouches[0].screenY;
-  }, false);
-  
-  // ---------------- Touch End ----------------
-  document.addEventListener("touchend", function(e) {
+    }, false);
+
+    // ---------------- Touch End ----------------
+    document.addEventListener("touchend", function (e) {
       touchEndX = e.changedTouches[0].screenX;
       touchEndY = e.changedTouches[0].screenY;
       handleSwipe();
-  }, false);
-  
-  // ---------------- Swipe Handler ----------------
-  function handleSwipe() {
+    }, false);
+
+    // ---------------- Swipe Handler ----------------
+    function handleSwipe() {
       const swipeThreshold = 80;   // Min left swipe distance
       const verticalLimit = 50;    // Vertical scroll limit
-  
+
       const diffX = touchStartX - touchEndX;
       const diffY = touchStartY - touchEndY;
-  
+
       // ❌ If vertical movement is big => user is scrolling → ignore
       if (Math.abs(diffY) > verticalLimit) {
-          return;
+        return;
       }
-  
+
       // ❌ If swipe distance is small → ignore
       if (Math.abs(diffX) < swipeThreshold) {
-          return;
+        return;
       }
-  
+
       // 👉 Valid Left Swipe Detected
       if (diffX > 0) {
-          if (window.location.pathname.includes("bill_create.html")) {
-              if (confirm("શું તમે પાછળ જવા માંગો છો?")) {
-                  window.location.href = "index.html";
-              }
+        if (window.location.pathname.includes("bill_create.html")) {
+          if (confirm("શું તમે પાછળ જવા માંગો છો?")) {
+            window.location.href = "index.html";
           }
-      }
-  }
-  
-function showAlert(msg){
-  const alert=document.getElementById("alertMsg");
-  alert.textContent=msg;
-  alert.classList.add("show");
-  alert.scrollIntoView({behavior:"smooth",block:"start"});
-  setTimeout(()=>{
-    alert.classList.remove("show");
-  },4000);
-}
-
-function toggleAmountMode(state){
-  withAmount=state;
-  document.querySelectorAll(".amount-col").forEach(e=>e.classList.toggle("hidden",!state));
-  document.getElementById("newItemAmount").style.display=state?"inline-block":"none";
-  checkItemAmounts();
-  checkTotalAmount();
-}
-
-function updateSelectedCount(){
-  const checked=document.querySelectorAll("#itemTable tbody tr input[type='checkbox']:checked").length;
-  const badge=document.getElementById("selectedCount");
-  if(badge){
-    badge.textContent=checked+" પસંદ";
-  }
-}
-
-function selectAllItems(){
-  document.querySelectorAll("#itemTable tbody tr input[type='checkbox']").forEach(chk=>{
-    chk.checked=true;
-  });
-  checkItemAmounts();
-  updateSelectedCount();
-}
-
-function clearAllItems(){
-  document.querySelectorAll("#itemTable tbody tr input[type='checkbox']").forEach(chk=>{
-    chk.checked=false;
-  });
-  checkItemAmounts();
-  updateSelectedCount();
-}
-
-function resetForm(){
-  if(!confirm("શું તમે ખરેખર ફોર્મ રીસેટ કરવા માંગો છો?"))return;
-  document.getElementById("lenarName").value="";
-  document.getElementById("lenarMobile").value="";
-  document.getElementById("denarName").value="વલકુ ભાઈ";
-  document.getElementById("billDate").valueAsDate=new Date();
-  document.getElementById("newItemName").value="";
-  document.getElementById("newItemAmount").value="0";
-  clearAllItems();
-  document.querySelectorAll("#itemTable tbody tr").forEach(r=>{
-    const qtyInput=r.querySelector("td:nth-child(3) input");
-    const amtInput=r.querySelector(".item-amount");
-    if(qtyInput)qtyInput.value="1";
-    if(amtInput)amtInput.value="0";
-  });
-  document.getElementById("totalInput").value="";
-  document.getElementById("finalBillView").style.display="none";
-  document.getElementById("printBtn").style.display="none";
-  checkItemAmounts();
-  updateSelectedCount();
-}
-
-function checkItemAmounts(){
-  if(!withAmount)return;
-  const totalInput=document.getElementById("totalInput");
-  const totalValue=parseFloat(totalInput.value)||0;
-  const itemAmounts=document.querySelectorAll(".item-amount");
-  const rows=document.querySelectorAll("#itemTable tbody tr");
-  
-  let hasItemAmount=false;
-  rows.forEach(r=>{
-    const chk=r.querySelector('input[type="checkbox"]');
-    if(chk && chk.checked){
-      const amtInput=r.querySelector(".item-amount");
-      if(amtInput && parseFloat(amtInput.value)>0){
-        hasItemAmount=true;
-      }
-    }
-  });
-  
-  if(totalValue>0 && !hasItemAmount){
-    itemAmounts.forEach(inp=>{
-      inp.disabled=true;
-    });
-    totalInput.disabled=false;
-    totalInput.readOnly=false;
-  }else if(hasItemAmount){
-    itemAmounts.forEach(inp=>inp.disabled=false);
-    totalInput.disabled=true;
-    totalInput.readOnly=true;
-    calculateTotalFromItems();
-  }else{
-    itemAmounts.forEach(inp=>inp.disabled=false);
-    totalInput.disabled=false;
-    totalInput.readOnly=false;
-    totalInput.value="";
-  }
-  updateSelectedCount();
-}
-
-function checkTotalAmount(){
-  if(!withAmount)return;
-  const totalInput=document.getElementById("totalInput");
-  const totalValue=parseFloat(totalInput.value)||0;
-  const itemAmounts=document.querySelectorAll(".item-amount");
-  const rows=document.querySelectorAll("#itemTable tbody tr");
-  
-  let hasItemAmount=false;
-  rows.forEach(r=>{
-    const chk=r.querySelector('input[type="checkbox"]');
-    if(chk && chk.checked){
-      const amtInput=r.querySelector(".item-amount");
-      if(amtInput && parseFloat(amtInput.value)>0){
-        hasItemAmount=true;
-      }
-    }
-  });
-  
-  if(totalValue>0 && !hasItemAmount){
-    itemAmounts.forEach(inp=>{
-      inp.disabled=true;
-    });
-    totalInput.disabled=false;
-    totalInput.readOnly=false;
-  }else if(hasItemAmount){
-    itemAmounts.forEach(inp=>inp.disabled=false);
-    totalInput.disabled=true;
-    totalInput.readOnly=true;
-    calculateTotalFromItems();
-  }else{
-    checkItemAmounts();
-  }
-}
-
-function calculateTotalFromItems(){
-  if(!withAmount)return;
-  const totalInput=document.getElementById("totalInput");
-  if(totalInput.readOnly){
-    const rows=document.querySelectorAll("#itemTable tbody tr");
-    let total=0;
-    rows.forEach(r=>{
-      const chk=r.querySelector('input[type="checkbox"]');
-      if(chk && chk.checked){
-        const amtInput=r.querySelector(".item-amount");
-        if(amtInput){
-          total+=parseFloat(amtInput.value)||0;
         }
       }
-    });
-    totalInput.value=total>0?total:"";
-  }
-}
-
-function updateRowNumbers(){
-  const rows=document.querySelectorAll("#itemTable tbody tr");
-  rows.forEach((row,index)=>{
-    const firstCell=row.querySelector("td:first-child");
-    if(firstCell && !firstCell.querySelector("input")){
-      firstCell.textContent=index+1;
-    }else if(!firstCell || firstCell.querySelector("input")){
-      const serialCell=document.createElement("td");
-      serialCell.style.textAlign="center";
-      serialCell.style.fontWeight="600";
-      serialCell.textContent=index+1;
-      row.insertBefore(serialCell,row.firstChild);
-    }else{
-      firstCell.textContent=index+1;
     }
-  });
-}
 
-function addNewItem(){
-  const name=document.getElementById("newItemName").value.trim();
-  const amt=document.getElementById("newItemAmount").value||0;
-  if(!name){
-    showAlert("કૃપા કરીને વસ્તુનું નામ દાખલ કરો");
-    return;
-  }
-  const tb=document.querySelector("#itemTable tbody");
-  const tr=document.createElement("tr");
-  const rowNum=tb.querySelectorAll("tr").length+1;
-  tr.innerHTML=`<td style="text-align:center;font-weight:600;">${rowNum}</td><td><input type="checkbox" onchange="checkItemAmounts();updateSelectedCount();"></td><td>${name}</td>
+    function showAlert(msg) {
+      const alert = document.getElementById("alertMsg");
+      alert.textContent = msg;
+      alert.classList.add("show");
+      alert.scrollIntoView({ behavior: "smooth", block: "start" });
+      setTimeout(() => {
+        alert.classList.remove("show");
+      }, 4000);
+    }
+
+    function toggleAmountMode(state) {
+      withAmount = state;
+      document.querySelectorAll(".amount-col").forEach(e => e.classList.toggle("hidden", !state));
+      document.getElementById("newItemAmount").style.display = state ? "inline-block" : "none";
+      checkItemAmounts();
+      checkTotalAmount();
+    }
+
+    function updateSelectedCount() {
+      const checked = document.querySelectorAll("#itemTable tbody tr input[type='checkbox']:checked").length;
+      const badge = document.getElementById("selectedCount");
+      if (badge) {
+        badge.textContent = checked + " પસંદ";
+      }
+    }
+
+    function selectAllItems() {
+      document.querySelectorAll("#itemTable tbody tr input[type='checkbox']").forEach(chk => {
+        chk.checked = true;
+      });
+      checkItemAmounts();
+      updateSelectedCount();
+    }
+
+    function clearAllItems() {
+      document.querySelectorAll("#itemTable tbody tr input[type='checkbox']").forEach(chk => {
+        chk.checked = false;
+      });
+      checkItemAmounts();
+      updateSelectedCount();
+    }
+
+    function resetForm() {
+      if (!confirm("શું તમે ખરેખર ફોર્મ રીસેટ કરવા માંગો છો?")) return;
+      document.getElementById("lenarName").value = "";
+      document.getElementById("lenarMobile").value = "";
+      document.getElementById("denarName").value = "વલકુ ભાઈ";
+      document.getElementById("billDate").valueAsDate = new Date();
+      document.getElementById("newItemName").value = "";
+      document.getElementById("newItemAmount").value = "0";
+      clearAllItems();
+      document.querySelectorAll("#itemTable tbody tr").forEach(r => {
+        const qtyInput = r.querySelector("td:nth-child(3) input");
+        const amtInput = r.querySelector(".item-amount");
+        if (qtyInput) qtyInput.value = "1";
+        if (amtInput) amtInput.value = "0";
+      });
+      document.getElementById("totalInput").value = "";
+      document.getElementById("finalBillView").style.display = "none";
+      document.getElementById("printBtn").style.display = "none";
+      checkItemAmounts();
+      updateSelectedCount();
+    }
+
+    function checkItemAmounts() {
+      if (!withAmount) return;
+      const totalInput = document.getElementById("totalInput");
+      const totalValue = parseFloat(totalInput.value) || 0;
+      const itemAmounts = document.querySelectorAll(".item-amount");
+      const rows = document.querySelectorAll("#itemTable tbody tr");
+
+      let hasItemAmount = false;
+      rows.forEach(r => {
+        const chk = r.querySelector('input[type="checkbox"]');
+        if (chk && chk.checked) {
+          const amtInput = r.querySelector(".item-amount");
+          if (amtInput && parseFloat(amtInput.value) > 0) {
+            hasItemAmount = true;
+          }
+        }
+      });
+
+      if (totalValue > 0 && !hasItemAmount) {
+        itemAmounts.forEach(inp => {
+          inp.disabled = true;
+        });
+        totalInput.disabled = false;
+        totalInput.readOnly = false;
+      } else if (hasItemAmount) {
+        itemAmounts.forEach(inp => inp.disabled = false);
+        totalInput.disabled = true;
+        totalInput.readOnly = true;
+        calculateTotalFromItems();
+      } else {
+        itemAmounts.forEach(inp => inp.disabled = false);
+        totalInput.disabled = false;
+        totalInput.readOnly = false;
+        totalInput.value = "";
+      }
+      updateSelectedCount();
+    }
+
+    function checkTotalAmount() {
+      if (!withAmount) return;
+      const totalInput = document.getElementById("totalInput");
+      const totalValue = parseFloat(totalInput.value) || 0;
+      const itemAmounts = document.querySelectorAll(".item-amount");
+      const rows = document.querySelectorAll("#itemTable tbody tr");
+
+      let hasItemAmount = false;
+      rows.forEach(r => {
+        const chk = r.querySelector('input[type="checkbox"]');
+        if (chk && chk.checked) {
+          const amtInput = r.querySelector(".item-amount");
+          if (amtInput && parseFloat(amtInput.value) > 0) {
+            hasItemAmount = true;
+          }
+        }
+      });
+
+      if (totalValue > 0 && !hasItemAmount) {
+        itemAmounts.forEach(inp => {
+          inp.disabled = true;
+        });
+        totalInput.disabled = false;
+        totalInput.readOnly = false;
+      } else if (hasItemAmount) {
+        itemAmounts.forEach(inp => inp.disabled = false);
+        totalInput.disabled = true;
+        totalInput.readOnly = true;
+        calculateTotalFromItems();
+      } else {
+        checkItemAmounts();
+      }
+    }
+
+    function calculateTotalFromItems() {
+      if (!withAmount) return;
+      const totalInput = document.getElementById("totalInput");
+      if (totalInput.readOnly) {
+        const rows = document.querySelectorAll("#itemTable tbody tr");
+        let total = 0;
+        rows.forEach(r => {
+          const chk = r.querySelector('input[type="checkbox"]');
+          if (chk && chk.checked) {
+            const amtInput = r.querySelector(".item-amount");
+            if (amtInput) {
+              total += parseFloat(amtInput.value) || 0;
+            }
+          }
+        });
+        totalInput.value = total > 0 ? total : "";
+      }
+    }
+
+    function updateRowNumbers() {
+      const rows = document.querySelectorAll("#itemTable tbody tr");
+      rows.forEach((row, index) => {
+        const firstCell = row.querySelector("td:first-child");
+        if (firstCell && !firstCell.querySelector("input")) {
+          firstCell.textContent = index + 1;
+        } else if (!firstCell || firstCell.querySelector("input")) {
+          const serialCell = document.createElement("td");
+          serialCell.style.textAlign = "center";
+          serialCell.style.fontWeight = "600";
+          serialCell.textContent = index + 1;
+          row.insertBefore(serialCell, row.firstChild);
+        } else {
+          firstCell.textContent = index + 1;
+        }
+      });
+    }
+
+    function addNewItem() {
+      const name = document.getElementById("newItemName").value.trim();
+      const amt = document.getElementById("newItemAmount").value || 0;
+      if (!name) {
+        showAlert("કૃપા કરીને વસ્તુનું નામ દાખલ કરો");
+        return;
+      }
+      const tb = document.querySelector("#itemTable tbody");
+      const tr = document.createElement("tr");
+      const rowNum = tb.querySelectorAll("tr").length + 1;
+      tr.innerHTML = `<td style="text-align:center;font-weight:600;">${rowNum}</td><td><input type="checkbox" onchange="checkItemAmounts();updateSelectedCount();"></td><td>${name}</td>
     <td><input type="number" min="1" value="1"></td>
-    <td class="amount-col ${!withAmount?'hidden':''}"><input type="number" min="0" value="${amt}" class="item-amount" onchange="checkItemAmounts()" oninput="checkItemAmounts()"></td>`;
-  tb.appendChild(tr);
-  document.getElementById("newItemName").value="";
-  document.getElementById("newItemAmount").value="0";
-  updateSelectedCount();
-  updateRowNumbers();
-  document.getElementById("newItemName").focus();
-}
-
-function generateBill(){
-  const lenar=document.getElementById("lenarName").value.trim();
-  const mobile=document.getElementById("lenarMobile").value.trim();
-  const denar=document.getElementById("denarName").value.trim();
-  const date=document.getElementById("billDate").value;
-  
-  if(!lenar || !mobile){
-    showAlert("કૃપા કરીને લેનારનું નામ અને મોબાઇલ નંબર ભરો");
-    return;
-  }
-
-  if (!/^[0-9]{10}$/.test(mobile)) {
-    showAlert("કૃપા કરીને સાચો 10 અંકનો મોબાઇલ નંબર દાખલ કરો");
-    return;
-  }
-  
-  
-  const rows=document.querySelectorAll("#itemTable tbody tr");
-  let total=0;
-  let list="";
-  let hasChecked=false;
-  const totalInput=document.getElementById("totalInput");
-  const totalValue=parseFloat(totalInput.value)||0;
-
-  let hasItemWiseAmount=false;
-  rows.forEach(r=>{
-    const chk=r.querySelector('input[type="checkbox"]');
-    if(chk && chk.checked){
-      const amtInput=r.querySelector(".item-amount");
-      if(amtInput && parseFloat(amtInput.value)>0){
-        hasItemWiseAmount=true;
-      }
+    <td class="amount-col ${!withAmount ? 'hidden' : ''}"><input type="number" min="0" value="${amt}" class="item-amount" onchange="checkItemAmounts()" oninput="checkItemAmounts()"></td>`;
+      tb.appendChild(tr);
+      document.getElementById("newItemName").value = "";
+      document.getElementById("newItemAmount").value = "0";
+      updateSelectedCount();
+      updateRowNumbers();
+      document.getElementById("newItemName").focus();
     }
-  });
 
-  let itemCounter=0;
-  rows.forEach(r=>{
-    const chk=r.querySelector('input[type="checkbox"]');
-    if(chk && chk.checked){
-      hasChecked=true;
-      itemCounter++;
-      const name=r.cells[2].textContent;
-      const qtyInput=r.cells[3].querySelector("input");
-      const qty=qtyInput?qtyInput.value:"1";
-      let amt="-";
-      if(withAmount){
-        const amtInput=r.querySelector(".item-amount");
-        const amountValue=parseFloat(amtInput?.value)||0;
-        if(amountValue>0){
-          total+=amountValue;
-          amt=`₹${amountValue}`;
-        }else if(totalValue>0 && !hasItemWiseAmount){
-          amt="-";
-        }else{
-          amt="-";
+    function generateBill() {
+      const lenar = document.getElementById("lenarName").value.trim();
+      const mobile = document.getElementById("lenarMobile").value.trim();
+      const denar = document.getElementById("denarName").value.trim();
+      const date = document.getElementById("billDate").value;
+
+      if (!lenar || !mobile) {
+        showAlert("કૃપા કરીને લેનારનું નામ અને મોબાઇલ નંબર ભરો");
+        return;
+      }
+
+      if (!/^[0-9]{10}$/.test(mobile)) {
+        showAlert("કૃપા કરીને સાચો 10 અંકનો મોબાઇલ નંબર દાખલ કરો");
+        return;
+      }
+
+
+      const rows = document.querySelectorAll("#itemTable tbody tr");
+      let total = 0;
+      let list = "";
+      let hasChecked = false;
+      const totalInput = document.getElementById("totalInput");
+      const totalValue = parseFloat(totalInput.value) || 0;
+
+      let hasItemWiseAmount = false;
+      rows.forEach(r => {
+        const chk = r.querySelector('input[type="checkbox"]');
+        if (chk && chk.checked) {
+          const amtInput = r.querySelector(".item-amount");
+          if (amtInput && parseFloat(amtInput.value) > 0) {
+            hasItemWiseAmount = true;
+          }
         }
+      });
+
+      let itemCounter = 0;
+      rows.forEach(r => {
+        const chk = r.querySelector('input[type="checkbox"]');
+        if (chk && chk.checked) {
+          hasChecked = true;
+          itemCounter++;
+          const name = r.cells[2].textContent;
+          const qtyInput = r.cells[3].querySelector("input");
+          const qty = qtyInput ? qtyInput.value : "1";
+          let amt = "-";
+          if (withAmount) {
+            const amtInput = r.querySelector(".item-amount");
+            const amountValue = parseFloat(amtInput?.value) || 0;
+            if (amountValue > 0) {
+              total += amountValue;
+              amt = `₹${amountValue}`;
+            } else if (totalValue > 0 && !hasItemWiseAmount) {
+              amt = "-";
+            } else {
+              amt = "-";
+            }
+          }
+          list += withAmount
+            ? `<tr><td style="text-align:center;font-weight:600;">${itemCounter}</td><td>${name}</td><td>${qty}</td><td>${amt}</td></tr>`
+            : `<tr><td style="text-align:center;font-weight:600;">${itemCounter}</td><td>${name}</td><td>${qty}</td></tr>`;
+        }
+      });
+
+      if (!hasChecked) {
+        showAlert("કૃપા કરીને ઓછામાં ઓછી એક વસ્તુ પસંદ કરો");
+        return;
       }
-      list+=withAmount
-        ?`<tr><td style="text-align:center;font-weight:600;">${itemCounter}</td><td>${name}</td><td>${qty}</td><td>${amt}</td></tr>`
-        :`<tr><td style="text-align:center;font-weight:600;">${itemCounter}</td><td>${name}</td><td>${qty}</td></tr>`;
-    }
-  });
 
-  if(!hasChecked){
-    showAlert("કૃપા કરીને ઓછામાં ઓછી એક વસ્તુ પસંદ કરો");
-    return;
-  }
+      if (withAmount && totalValue === 0) {
+        showAlert("કૃપા કરીને રકમ દાખલ કરો");
+        return;
+      }
 
-  if(withAmount && totalValue===0){
-    showAlert("કૃપા કરીને રકમ દાખલ કરો");
-    return;
-  }
-
-  if(withAmount && totalValue>0){
-    total=totalValue;
-  }
-  const formattedTotal=withAmount && total>0?`₹${total}`:"";
-  const billHTML = `
+      if (withAmount && totalValue > 0) {
+        total = totalValue;
+      }
+      const formattedTotal = withAmount && total > 0 ? `₹${total}` : "";
+      const billHTML = `
 <div style="max-width:520px;margin:0 auto;padding:12px;background:#fff;border-radius:15px;
 box-shadow:0 15px 30px rgba(0,0,0,0.12);font-family:'Poppins',Arial,sans-serif;color:#2b3d52;">
 
   <!-- Header -->
   <div style="text-align:center;margin-bottom:15px;">
     <h6 style="margin:0;font-size:18px;font-weight:700;">🙏 જય સુરાપુરા 🙏</h6>
-    <p style="font-size:12px;color:#555;margin:5px 0;">🙏 જય મેલડી માં 🙏  જય બુટભવાણી માં 🙏 જય ખોડિયાર માં 🙏</p>
+    <p style="font-size:12px;color:#555;margin:5px 0;">🙏 જય મેલડી માં 🙏  જય બુટભવાની માં 🙏 જય ખોડિયાર માં 🙏</p>
     <h2 style="margin:10px 0;color:#2b3d52;font-size:20px;border-bottom:2px solid #2b3d52;padding-bottom:5px;">
       ઉપલી ફળી મઢ વાસણ બિલ
     </h2>
@@ -1134,20 +1337,19 @@ box-shadow:0 15px 30px rgba(0,0,0,0.12);font-family:'Poppins',Arial,sans-serif;c
   <!-- Items Table -->
   <table style="width:100%;border-collapse:collapse;margin-top:15px;font-size:14px;">
     <thead>
-      ${
-        withAmount
-        ? `<tr style="background:#2b3d52;color:white;">
+      ${withAmount
+          ? `<tr style="background:#2b3d52;color:white;">
              <th style="padding:8px;width:50px;">ક્રમ</th>
              <th>વસ્તુ</th>
              <th>સંખ્યા</th>
              <th>રકમ</th>
            </tr>`
-        : `<tr style="background:#2b3d52;color:white;">
+          : `<tr style="background:#2b3d52;color:white;">
              <th style="padding:8px;width:60px;">ક્રમ</th>
              <th>વસ્તુ</th>
              <th>સંખ્યા</th>
            </tr>`
-      }
+        }
     </thead>
 
     <tbody>
@@ -1155,14 +1357,13 @@ box-shadow:0 15px 30px rgba(0,0,0,0.12);font-family:'Poppins',Arial,sans-serif;c
     </tbody>
 
     <tfoot>
-      ${
-        withAmount && formattedTotal
-        ? `<tr style="background:#e7edf3;font-weight:700;">
+      ${withAmount && formattedTotal
+          ? `<tr style="background:#e7edf3;font-weight:700;">
              <td colspan="3" style="padding:10px;text-align:right;">કુલ</td>
              <td style="padding:10px;text-align:center;">${formattedTotal}</td>
            </tr>`
-        : ``
-      }
+          : ``
+        }
     </tfoot>
   </table>
 
@@ -1183,73 +1384,74 @@ box-shadow:0 15px 30px rgba(0,0,0,0.12);font-family:'Poppins',Arial,sans-serif;c
 
 
 
-const finalDiv=document.getElementById("finalBillView");
-finalDiv.innerHTML=billHTML;
-finalDiv.style.display="block";
-document.getElementById("printBtn").style.display="flex";
-window.scrollTo({top:finalDiv.offsetTop-20,behavior:"smooth"});
+      const finalDiv = document.getElementById("finalBillView");
+      finalDiv.innerHTML = billHTML;
+      finalDiv.style.display = "block";
+      document.getElementById("printBtn").style.display = "flex";
+      window.scrollTo({ top: finalDiv.offsetTop - 20, behavior: "smooth" });
 
-saveBillToHistory(lenar,mobile,denar,date,list,formattedTotal,withAmount);
-}
+      saveBillToHistory(lenar, mobile, denar, date, list, formattedTotal, withAmount);
+    }
 
-function saveBillToHistory(lenar,mobile,denar,date,itemsList,total,withAmount){
-  const billData={
-    id:Date.now(),
-    lenar:lenar,
-    mobile:mobile,
-    denar:denar,
-    date:date,
-    items:itemsList,
-    total:total,
-    withAmount:withAmount,
-    status:"pending",
-    paidAmount:0,
-    timestamp:new Date().toISOString()
-  };
-  
-  let history=JSON.parse(localStorage.getItem("vasanBillHistory")||"[]");
-  history.unshift(billData);
-  if(history.length>100){
-    history=history.slice(0,100);
-  }
-  localStorage.setItem("vasanBillHistory",JSON.stringify(history));
-  
-  // autoBackup();
-}
+    function saveBillToHistory(lenar, mobile, denar, date, itemsList, total, withAmount) {
+      const billData = {
+        id: Date.now(),
+        lenar: lenar,
+        mobile: mobile,
+        denar: denar,
+        date: date,
+        items: itemsList,
+        total: total,
+        withAmount: withAmount,
+        status: "pending",
+        paidAmount: 0,
+        timestamp: new Date().toISOString()
+      };
+
+      let history = JSON.parse(localStorage.getItem("vasanBillHistory") || "[]");
+      history.unshift(billData);
+      if (history.length > 100) {
+        history = history.slice(0, 100);
+      }
+      localStorage.setItem("vasanBillHistory", JSON.stringify(history));
+
+      // autoBackup();
+    }
 
 
-function printBill(){
-  window.print();
-}
+    function printBill() {
+      window.print();
+    }
 
-function downloadImage() {
-    const finalDiv = document.getElementById("finalBillView");
+    function downloadImage() {
+      const finalDiv = document.getElementById("finalBillView");
 
-    const oldStyle = finalDiv.getAttribute("style") || "";
+      const oldStyle = finalDiv.getAttribute("style") || "";
 
-    finalDiv.style.transform = "none";
-    finalDiv.style.zoom = "1";
-    finalDiv.style.width = "520px";
-    finalDiv.style.maxWidth = "520px";
-    finalDiv.style.margin = "0 auto";
-    finalDiv.style.boxShadow = "none";
-    finalDiv.style.border = "2px solid #2b3d52";
+      finalDiv.style.transform = "none";
+      finalDiv.style.zoom = "1";
+      finalDiv.style.width = "520px";
+      finalDiv.style.maxWidth = "520px";
+      finalDiv.style.margin = "0 auto";
+      finalDiv.style.boxShadow = "none";
+      finalDiv.style.border = "2px solid #2b3d52";
 
-    html2canvas(finalDiv, {
+      html2canvas(finalDiv, {
         scale: 3,
         backgroundColor: "#ffffff",
         useCORS: true,
         scrollY: -window.scrollY
-    }).then(canvas => {
+      }).then(canvas => {
         const link = document.createElement("a");
         link.download = `Vasan_Bill_${Date.now()}.png`;
         link.href = canvas.toDataURL("image/png");
         link.click();
 
         finalDiv.setAttribute("style", oldStyle);
-    });
-}
+      });
+    }
 
-</script>
+  </script>
 </body>
+
 </html>
