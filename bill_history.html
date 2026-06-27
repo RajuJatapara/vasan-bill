@@ -994,7 +994,14 @@
       }
 
       const waWindow = window.open("", "_blank");
-      waWindow.document.write("<div style='font-family:sans-serif;padding:30px;text-align:center;color:#2b3d52;'><h2>WhatsApp ખુલી રહ્યું છે...</h2><p>બિલ તમારા ફોનમાં <b>ડાઉનલોડ</b> થઈ ગયું છે.</p><p>WhatsApp ખુલે એટલે તેને <b>Attach (📎)</b> કરીને મોકલી આપો.</p></div>");
+      waWindow.document.write(`
+        <div style='font-family:sans-serif;padding:30px;text-align:center;color:#2b3d52;'>
+          <h2>WhatsApp ખુલી રહ્યું છે...</h2>
+          <p>બિલ તમારા ફોનમાં <b>ડાઉનલોડ</b> થઈ ગયું છે.</p>
+          <p>WhatsApp ખુલે એટલે તેને <b>Attach (📎)</b> કરીને મોકલી આપો.</p>
+          <a href='https://api.whatsapp.com/send?phone=91${bill.mobile}' style='display:inline-block;margin-top:20px;padding:12px 24px;background:#25D366;color:white;text-decoration:none;border-radius:8px;font-weight:bold;font-size:16px;'>📲 WhatsApp ખોલો</a>
+        </div>
+      `);
 
       const billHTML = `
   <div id="tempBillForShare" style="width:520px;max-width:520px;margin:0 auto;padding:25px;background:#fff;border-radius:15px;border:2px solid #2b3d52;font-family:'Poppins',Arial,sans-serif;color:#2b3d52;position:absolute;left:-9999px;top:0;">
@@ -1089,7 +1096,7 @@
         link.click();
 
         setTimeout(() => {
-          waWindow.location.href = `https://wa.me/91${bill.mobile}`;
+          waWindow.location.href = `https://api.whatsapp.com/send?phone=91${bill.mobile}`;
         }, 500);
 
       }).catch(err => {
